@@ -4627,7 +4627,7 @@ img {
   padding: 0.3rem 0 0.8em;
 }
 .has-jax {
-  overflow: auto;
+  overflow: visible;
 }
 #article-container .aplayer {
   margin: 0 0 1rem;
