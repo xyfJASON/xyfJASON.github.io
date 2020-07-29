@@ -1,0 +1,307 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>数论函数学习笔记 | xyfJASON</title><meta name="description" content="参考资料：oi-wiki 莫比乌斯反演｜oi-wiki 筛法｜oi-wiki 欧拉函数｜blog｜blog   积性函数 Multiplicable functionDefinition：  $\forall x,y\in\mathbb{N}_+$，$\gcd(x,y)&#x3D;1$，都有 $f(xy)&#x3D;f(x)f(y)$，则称 $f(x)$ 是积性函数。 $\forall x,y\in\mathbb{N"><meta name="keywords" content="学习笔记"><meta name="author" content="xyfJASON"><meta name="copyright" content="xyfJASON"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/myimg/myfavicon.png"><link rel="canonical" href="https://xyfjason.github.io/2020/07/26/%E6%95%B0%E8%AE%BA%E5%87%BD%E6%95%B0%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta property="og:type" content="article"><meta property="og:title" content="数论函数学习笔记"><meta property="og:url" content="https://xyfjason.github.io/2020/07/26/%E6%95%B0%E8%AE%BA%E5%87%BD%E6%95%B0%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><meta property="og:site_name" content="xyfJASON"><meta property="og:description" content="参考资料：oi-wiki 莫比乌斯反演｜oi-wiki 筛法｜oi-wiki 欧拉函数｜blog｜blog   积性函数 Multiplicable functionDefinition：  $\forall x,y\in\mathbb{N}_+$，$\gcd(x,y)&#x3D;1$，都有 $f(xy)&#x3D;f(x)f(y)$，则称 $f(x)$ 是积性函数。 $\forall x,y\in\mathbb{N"><meta property="og:image" content="https://xyfjason.github.io/gallery/pexels_numbers1.jpg"><meta property="article:published_time" content="2020-07-26T06:40:44.000Z"><meta property="article:modified_time" content="2020-07-29T09:39:21.247Z"><meta name="twitter:card" content="summary"><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#fff')
+  }
+}
+
+var getCookies = function (name) {
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) return parts.pop().split(';').shift()
+}
+
+var autoChangeMode = 'false'
+var t = getCookies('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (Cookies.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="prev" title="数论函数练习记录" href="https://xyfjason.github.io/2020/07/26/%E6%95%B0%E8%AE%BA%E5%87%BD%E6%95%B0%E7%BB%83%E4%B9%A0%E8%AE%B0%E5%BD%95/"><link rel="next" title="2020牛客暑期多校训练营（第五场）" href="https://xyfjason.github.io/2020/07/25/2020%E7%89%9B%E5%AE%A2%E6%9A%91%E6%9C%9F%E5%A4%9A%E6%A0%A1%E8%AE%AD%E7%BB%83%E8%90%A5%EF%BC%88%E7%AC%AC%E4%BA%94%E5%9C%BA%EF%BC%89/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容:${query}"}},
+  translate: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  runtime: false,
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  highlightCopy: true,
+  highlightLang: true,
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isanchor: false    
+}</script><script>var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isSidebar: true
+  }</script><noscript><style>
+#nav {
+  opacity: 1
+}
+.justified-gallery img{
+  opacity: 1
+}
+</style></noscript><meta name="generator" content="Hexo 4.2.1"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/myimg/myavatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">81</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">11</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">41</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E9%A1%B9%E7%9B%AE/"><i class="fa-fw fas fa-book"></i><span> 项目文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E9%9A%8F%E7%AC%94/"><i class="fa-fw fas fa-align-center"></i><span> 随笔文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/website/"><i class="fa-fw fas fa-magic"></i><span> 网站收藏</span></a></div></div></div></div><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#积性函数-Multiplicable-function"><span class="toc-number">1.</span> <span class="toc-text">积性函数 Multiplicable function</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#欧拉函数-Euler’s-totient-function"><span class="toc-number">2.</span> <span class="toc-text">欧拉函数 Euler’s totient function</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#莫比乌斯函数-Mobius-function"><span class="toc-number">3.</span> <span class="toc-text">莫比乌斯函数 Möbius function</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#狄利克雷卷积-Dirichlet-Convolution"><span class="toc-number">4.</span> <span class="toc-text">狄利克雷卷积 Dirichlet Convolution</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他常用性质-Properties"><span class="toc-number">5.</span> <span class="toc-text">其他常用性质 Properties</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#莫比乌斯反演-Mobius-Inversion"><span class="toc-number">6.</span> <span class="toc-text">莫比乌斯反演 Möbius Inversion</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常用技巧-1：数论分块"><span class="toc-number">7.</span> <span class="toc-text">常用技巧#1：数论分块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常用技巧-2：提取公因数"><span class="toc-number">8.</span> <span class="toc-text">常用技巧#2：提取公因数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常用技巧-3：技巧2的逆过程"><span class="toc-number">9.</span> <span class="toc-text">常用技巧#3：技巧2的逆过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常用技巧-4：一种预处理"><span class="toc-number">10.</span> <span class="toc-text">常用技巧#4：一种预处理</span></a></li></ol></div></div></div><div class="code-close" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/gallery/pexels_numbers1.jpg)"><nav id="nav"><span class="pull-left" id="blog_name"><a class="blog_title" id="site-name" href="/">xyfJASON</a></span><span class="pull-right menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E9%A1%B9%E7%9B%AE/"><i class="fa-fw fas fa-book"></i><span> 项目文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E9%9A%8F%E7%AC%94/"><i class="fa-fw fas fa-align-center"></i><span> 随笔文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/website/"><i class="fa-fw fas fa-magic"></i><span> 网站收藏</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">数论函数学习笔记</div></div><div id="post-meta"><div class="meta-firstline"><time class="post-meta__date"><span class="post-meta__date-created" title="发表于 2020-07-26 14:40:44"><i class="far fa-calendar-alt fa-fw"></i> 发表于 2020-07-26</span><span class="post-meta__separator">|</span><span class="post-meta__date-updated" title="更新于 2020-07-29 17:39:21"><i class="fas fa-history fa-fw"></i> 更新于 2020-07-29</span></time><span class="post-meta__categories"><span class="post-meta__separator">|</span><i class="fas fa-inbox fa-fw post-meta__icon"></i><a class="post-meta__categories" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><i class="fas fa-angle-right post-meta__separator"></i><i class="fas fa-inbox fa-fw post-meta__icon"></i><a class="post-meta__categories" href="/categories/%E6%95%B0%E5%AD%A6/%E6%95%B0%E8%AE%BA/">数论</a><i class="fas fa-angle-right post-meta__separator"></i><i class="fas fa-inbox fa-fw post-meta__icon"></i><a class="post-meta__categories" href="/categories/%E6%95%B0%E5%AD%A6/%E6%95%B0%E8%AE%BA/%E6%95%B0%E8%AE%BA%E5%87%BD%E6%95%B0/">数论函数</a></span></div><div class="meta-secondline"> <span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta__icon"></i><span>字数总计:</span><span class="word-count">2.4k</span><span class="post-meta__separator">|</span><i class="far fa-clock fa-fw post-meta__icon"></i><span>阅读时长: 12 分钟</span></span></div><div class="meta-thirdline"><span class="post-meta-pv-cv"><span class="post-meta__separator">|</span><i class="far fa-eye fa-fw post-meta__icon"></i><span>阅读量:</span><span id="busuanzi_value_page_pv"></span></span><span class="post-meta-commentcount"></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><p>参考资料：<a href="https://oi-wiki.org/math/mobius/" target="_blank" rel="noopener">oi-wiki 莫比乌斯反演</a>｜<a href="https://oi-wiki.org/math/sieve/" target="_blank" rel="noopener">oi-wiki 筛法</a>｜<a href="https://oi-wiki.org/math/euler/" target="_blank" rel="noopener">oi-wiki 欧拉函数</a>｜<a href="https://www.cnblogs.com/heyujun/p/10179497.html" target="_blank" rel="noopener">blog</a>｜<a href="https://www.luogu.com.cn/blog/An-Amazing-Blog/mu-bi-wu-si-fan-yan-ji-ge-ji-miao-di-dong-xi" target="_blank" rel="noopener">blog</a> </p>
+<a id="more"></a>
+<h2 id="积性函数-Multiplicable-function"><a href="#积性函数-Multiplicable-function" class="headerlink" title="积性函数 Multiplicable function"></a>积性函数 Multiplicable function</h2><p><strong>Definition</strong>：</p>
+<ul>
+<li>$\forall x,y\in\mathbb{N}_+$，$\gcd(x,y)=1$，都有 $f(xy)=f(x)f(y)$，则称 $f(x)$ 是<strong>积性函数</strong>。</li>
+<li>$\forall x,y\in\mathbb{N}_+$，都有 $f(xy)=f(x)f(y)$，则称 $f(x)$ 是 <strong>完全积性函数</strong>。</li>
+</ul>
+<p><strong>Properties</strong>：若 $f(x),g(x)$ 均为积性函数，则下列函数也是积性函数：</p>
+<script type="math/tex; mode=display">
+\begin{align}&h(x)=f(x^p)\\&h(x)=f^p(x)\\&h(x)=f(x)g(x)\\&h(x)=\sum_{d\mid x}f(d)g\left(\frac{x}{d}\right)\end{align}</script><p><strong>Examples</strong>：</p>
+<ul>
+<li>单位函数：$\epsilon(n)=[n=1]$ </li>
+<li>恒等函数：$\text{id}_k(n)=n^k$ <ul>
+<li>$k=1$ 时，$\text{id}(n)=n$ 即标号函数</li>
+</ul>
+</li>
+<li>常数函数：$1(n)=1$ </li>
+<li>除数函数：$\sigma_k(n)=\sum\limits_{d\mid n}d^k$ <ul>
+<li>$k=0$ 时，$\sigma_0(n)=d(n)=\sum\limits_{d\mid n}1$ 即约数个数函数</li>
+<li>$k=1$ 时，$\sigma(n)=\sum\limits_{d\mid n}d$ 即约数和函数</li>
+</ul>
+</li>
+<li>欧拉函数：$\varphi(n)=\sum\limits_{i=1}^n[\gcd(i,n)=1]$ </li>
+<li>莫比乌斯函数：$\mu(n)=\begin{cases}1&amp;n=1\\0&amp;\exists d&gt;1:d^2\mid n\(-1)^{\omega(n)}&amp;\text{otherwise}\end{cases}$，其中，$\omega(n)$ 表示 $n$ 的不同质因数个数</li>
+</ul>
+<hr>
+<h2 id="欧拉函数-Euler’s-totient-function"><a href="#欧拉函数-Euler’s-totient-function" class="headerlink" title="欧拉函数 Euler’s totient function"></a>欧拉函数 Euler’s totient function</h2><p><strong>Definition</strong>：$\varphi(n)$ 表示小于等于 $n$ 的与 $n$ 互质的数的个数。</p>
+<p><strong>Theorem</strong>：设 $n=\prod\limits_{i=1}^k{p_i}^{r_i}$（由<strong>唯一分解定理</strong>给出），则：</p>
+<script type="math/tex; mode=display">
+\varphi(n)=n\cdot\prod\limits_{i=1}^k\left(1-\frac{1}{p_i}\right)</script><p><em>Intuitive proof</em>：对于 $p_i$ 来说，$p_i$ 及其倍数是 $n$ 的因数，占比 $\frac{1}{p_i}$，则非 $p_i$ 或其倍数者占比 $\left(1-\frac{1}{p_i}\right)$；故既非 $p_1$ 倍数、又非 $p_2$ 倍数……又非 $p_k$倍数的数占比 $\prod\limits_{i=1}^k\left(1-\frac{1}{p_i}\right)$，故 $\varphi(n)=n\cdot\prod\limits_{i=1}^k\left(1-\frac{1}{p_i}\right)$. </p>
+<p><strong>Properties</strong>：</p>
+<ul>
+<li><p>设 $p$ 是素数，$\varphi(p)=p-1$. （由定义显然）</p>
+</li>
+<li><p>设 $p$ 是素数，$n=p^k$，则 $\varphi(n)=p^k-p^{k-1}$（代入公式易得）</p>
+</li>
+<li><p>积性：若 $(a,b)=1$，则 $\varphi(a\times b)=\varphi(a)\times\varphi(b)$（代入公式易得）</p>
+</li>
+<li><p>对于素数 $p$ ：$\varphi(n\times p)=\begin{cases}\varphi(n)\times p&amp;p\mid n\\\varphi(n)\times(p-1)&amp;p\nmid n\end{cases}$（代入公式易得）</p>
+</li>
+<li><p>小于等于 $n$ 与 $n$ 互质的数的总和为 $\varphi(n)\cdot\frac{n}{2}$ </p>
+<p>证明：若 $m$ 与 $n$ 互质，则 $n-m$ 也与 $n$ 互质，故所有小于等于 $n$ 与 $n$ 互质的数的平均数为 $\frac{n}{2}$，故总和为 $\varphi(n)\cdot\frac{n}{2}$. </p>
+</li>
+<li><p>$n=\sum\limits_{d|n}\varphi(d)$. </p>
+<p>证明：设 $f(x)$ 表示 $\gcd(k,n)=x\;(k\leqslant n)$ 的数的个数，则 $n=\sum\limits_{i=1}^nf(i)$。又 $\gcd(k,n)=x\iff\gcd\left(\frac{k}{x},\frac{n}{x}\right)=1$，所以 $f(x)=\varphi\left(\frac{n}{x}\right)$，故 $n=\sum\limits_{i=1}^n\varphi\left(\frac{n}{i}\right)=\sum\limits_{d\mid n}\varphi(d)$. </p>
+</li>
+</ul>
+<p><strong>Code（应用公式求出单个 $\varphi(n)$）</strong>：</p>
+<p><strong>Complexity</strong>：$O(\sqrt n)$ </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getPhi</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> res = n;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>; i * i &lt;= n; i++)&#123;</span><br><span class="line">		<span class="keyword">if</span>(n % i == <span class="number">0</span>)&#123;</span><br><span class="line">			res = res / i * (i - <span class="number">1</span>);</span><br><span class="line">			<span class="keyword">while</span>(n % i == <span class="number">0</span>)</span><br><span class="line">				n /= i;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(n &gt; <span class="number">1</span>)	res = res / n * (n - <span class="number">1</span>);</span><br><span class="line">	<span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Code（线性筛）</strong>：</p>
+<p><strong>Complexity</strong>：$O(n)$ </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> phi[N], pList[N], pID;</span><br><span class="line"><span class="keyword">bool</span> notP[N];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Euler</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">	notP[<span class="number">0</span>] = notP[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">	phi[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">		<span class="keyword">if</span>(notP[i] == <span class="number">0</span>)&#123;</span><br><span class="line">			pList[++pID] = i;</span><br><span class="line">			phi[i] = i - <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= pID; j++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(<span class="number">1l</span>l * i * pList[j] &gt; n)	<span class="keyword">break</span>;</span><br><span class="line">			notP[i * pList[j]] = <span class="number">1</span>;</span><br><span class="line">			<span class="keyword">if</span>(i % pList[j] == <span class="number">0</span>)&#123;</span><br><span class="line">				phi[i * pList[j]] = phi[i] * pList[j];</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span>	phi[i * pList[j]] = phi[i] * (pList[j] - <span class="number">1</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="莫比乌斯函数-Mobius-function"><a href="#莫比乌斯函数-Mobius-function" class="headerlink" title="莫比乌斯函数 Möbius function"></a>莫比乌斯函数 Möbius function</h2><p><strong>Definition</strong>：$\mu(n)=\begin{cases}1&amp;n=1\\0&amp;\exists d&gt;1:d^2\mid n\(-1)^{k}&amp;n=p_1p_2\cdots p_k\end{cases}$ </p>
+<p><strong>Properties</strong>：</p>
+<ul>
+<li><p>$\sum\limits_{d\mid n}\mu(d)=\begin{cases}1,&amp;n=1\\0,&amp;n&gt;1\end{cases}=\epsilon(n)$. </p>
+<p>证明：设 $n=\prod\limits_{i=1}^k{p_i}^{r_i}$，则 $\sum\limits_{d\mid n}\mu(d)=\sum\limits_{i=0}^k\binom{k}{i}(-1)^i=(1+(-1))^k=\begin{cases}1,&amp;n=1\\0,&amp;n&gt;1\end{cases}$. </p>
+<p>推论：$[\gcd(i,j)=1]\iff\sum\limits_{d\mid\gcd(i,j)}\mu(d)$ </p>
+</li>
+<li><p>$\sum\limits_{d\mid n}\frac{\mu(d)}{d}=\frac{\varphi(n)}{n}$. </p>
+</li>
+<li><p>积性：若 $(a,b)=1$，则 $\mu(a\times b)=\mu(a)\times\mu(b)$.（由定义易证）</p>
+</li>
+</ul>
+<p><strong>Code（线性筛）</strong>：</p>
+<p><strong>Complexity</strong>：$O(n)$ </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> mu[N], pList[N], pID;</span><br><span class="line"><span class="keyword">bool</span> notP[N];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Euler</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">	notP[<span class="number">0</span>] = notP[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">	mu[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">		<span class="keyword">if</span>(notP[i] == <span class="number">0</span>)&#123;</span><br><span class="line">			pList[++pID] = i;</span><br><span class="line">			mu[i] = <span class="number">-1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= pID; j++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(<span class="number">1l</span>l * i * pList[j] &gt; n)	<span class="keyword">break</span>;</span><br><span class="line">			notP[i * pList[j]] = <span class="number">1</span>;</span><br><span class="line">			<span class="keyword">if</span>(i % pList[j] == <span class="number">0</span>)&#123;</span><br><span class="line">				mu[i * pList[j]] = <span class="number">0</span>;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span>	mu[i * pList[j]] = -mu[i];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="狄利克雷卷积-Dirichlet-Convolution"><a href="#狄利克雷卷积-Dirichlet-Convolution" class="headerlink" title="狄利克雷卷积 Dirichlet Convolution"></a>狄利克雷卷积 Dirichlet Convolution</h2><p><strong>Definition</strong>：两个数论函数 $f,g$ 的 $\textbf{Dirichlet}$ 卷积为：</p>
+<script type="math/tex; mode=display">
+(f*g)(n)=\sum_{d\mid n}f(d)g\left(\frac{n}{d}\right)</script><p>或</p>
+<script type="math/tex; mode=display">
+(f*g)(n)=\sum_{ab=n}f(a)g(b)</script><p><strong>Properties</strong>：</p>
+<ul>
+<li><p>满足交换律：</p>
+<script type="math/tex; mode=display">
+f*g=g*f</script><p>易证。</p>
+</li>
+<li><p>满足结合律：</p>
+<script type="math/tex; mode=display">
+(f*g)*h=f*(g*h)</script><p>从外往内计算就容易知道，多个函数的 $\textbf{Dirichlet}$ 卷积就是遍历自变量乘积为 $n$ 的所有可能的函数值相乘的和。</p>
+</li>
+<li><p>满足分配律：</p>
+<script type="math/tex; mode=display">
+(f+g)*h=f*h+g*h</script><p>易证。</p>
+</li>
+<li><p>$\epsilon(n)$ 是 $\textbf{Dirichlet}$ 卷积的单位元，即任何函数卷 $\epsilon(n)$ 均为它本身。</p>
+</li>
+<li><p>积性函数的 $\textbf{Dirichlet}$ 卷积仍为积性函数。</p>
+<p>证明：令 $h=f*g$。设 $(n,m)=1$，则 $h(n)\times h(m)=\sum\limits_{d\mid n}f(d)g\left(\frac{n}{d}\right)\times\sum\limits_{k\mid m}f(k)g\left(\frac{m}{k}\right)$，考虑前者的第 $i$ 项和后者的第 $j$ 项相乘得出的项：$f(d_i)g\left(\frac{n}{d_i}\right)\times f(k_j)g\left(\frac{m}{k_j}\right)=f(d_ik_j)g\left(\frac{nm}{d_ik_j}\right)$，当 $d_i$ 遍历所有 $n$ 的因子、$k_j$ 遍历所有 $m$ 的因子时，由于 $n,m$ 互质，$d_ik_j$ 遍历了所有 $nm$ 的因子。故 $h(n)\times h(m)=\sum\limits_{d\mid nm}f(d)g\left(\frac{nm}{d}\right)=h(n\times m)$. </p>
+</li>
+<li><p>逆元：对于 $f(1)\neq0$ 的函数 $f(n)$，$\exists\,g(n)$ 使得 $f(n)*g(n)=\epsilon(n)$. </p>
+<p>事实上，有：</p>
+<script type="math/tex; mode=display">
+g(n)=\frac{1}{f(n)}\left([n=1]-\sum_{d\mid n,d>1}f(d)g\left(\frac{n}{d}\right)\right)</script><p>或：</p>
+<script type="math/tex; mode=display">
+g(n)=\begin{cases}\frac{1}{f(n)}&n=1\\-\frac{1}{f(n)}\sum\limits_{d\mid n,d>1}f(d)g\left(\frac{n}{d}\right)&n>1\end{cases}</script><p>注意这是一个<strong>递归</strong>定义。</p>
+<p>注意：积性函数必有逆（因为积性函数一定有 $f(1)=1\neq0$），且逆元也是积性函数。</p>
+</li>
+</ul>
+<p><strong>Examples</strong>：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\epsilon=\mu*1&\iff\epsilon(n)=\sum_{d\mid n}\mu(d)\\
+d=1*1&\iff d(n)=\sum_{d\mid n}1\\
+\sigma=\text{id}*1&\iff\sigma(n)=\sum_{d\mid n}d\\
+\varphi=\mu*\text{id}&\iff\varphi(n)=\sum_{d\mid n}\mu(d)\frac{n}{d}=\sum_{d\mid n}d\cdot\mu\left(\frac{n}{d}\right)\\
+\text{id}=\varphi*1&\iff \text{id}(n)=n=\sum_{d\mid n}\varphi(d)
+\end{align}</script><hr>
+<h2 id="其他常用性质-Properties"><a href="#其他常用性质-Properties" class="headerlink" title="其他常用性质 Properties"></a>其他常用性质 Properties</h2><p>除上述卷积的例子以外，其他有关积性函数的常用性质。</p>
+<script type="math/tex; mode=display">
+\begin{align}
+d(i\cdot j)=\sum_{x\mid i}\sum_{y\mid j}[\gcd(x,y)=1]
+\end{align}</script><hr>
+<h2 id="莫比乌斯反演-Mobius-Inversion"><a href="#莫比乌斯反演-Mobius-Inversion" class="headerlink" title="莫比乌斯反演 Möbius Inversion"></a>莫比乌斯反演 Möbius Inversion</h2><script type="math/tex; mode=display">
+f(n)=\sum_{d\mid n}g(d)\iff g(n)=\sum_{d\mid n}\mu(d)f\left(\frac{n}{d}\right)</script><p>或写成 $\textbf{Dirichlet}$ 卷积形式：</p>
+<script type="math/tex; mode=display">
+f=g*1\iff g=f*\mu</script><p><strong>Proof</strong>：运用卷积，因为 $\mu(n)$ 是 $1(n)$ 的逆元，即 $\mu*1=\epsilon$，所以有：</p>
+<script type="math/tex; mode=display">
+f=g*1\iff f*\mu=g*1*\mu\iff f*\mu=g</script><hr>
+<h2 id="常用技巧-1：数论分块"><a href="#常用技巧-1：数论分块" class="headerlink" title="常用技巧#1：数论分块"></a>常用技巧#1：数论分块</h2><p>假设我们要求含有 $\left\lfloor\frac{n}{d}\right\rfloor$ 的和式（例如 $\sum\limits_{d=1}^n\left\lfloor\frac{n}{d}\right\rfloor$），发现其中有很多项值其实是相同的。例如：$\left\lfloor\frac{60}{21}\right\rfloor=\left\lfloor\frac{60}{22}\right\rfloor=\cdots=\left\lfloor\frac{60}{30}\right\rfloor$，所以我们考虑能否把它们放在一起算。换句话说，我们要找到<strong>最大的</strong> $r$，使 $\left\lfloor\frac{n}{r}\right\rfloor=\left\lfloor\frac{n}{l}\right\rfloor$. 可以证明：$r=\left\lfloor\frac{n}{\left\lfloor\frac{n}{l}\right\rfloor}\right\rfloor$. </p>
+<blockquote>
+<p>首先，$\left\lfloor\frac{n}{l}\right\rfloor=\left\lfloor\frac{n}{r}\right\rfloor\leqslant\frac{n}{r}$，于是 $r\leqslant\frac{n}{\left\lfloor\frac{n}{l}\right\rfloor}$，故 $r=\left\lfloor\frac{n}{\left\lfloor\frac{n}{l}\right\rfloor}\right\rfloor$.  其次，$r\leqslant n$ 显然，需要证明 $r\geqslant l$：$r=\left\lfloor\frac{n}{\left\lfloor\frac{n}{l}\right\rfloor}\right\rfloor\geqslant\left\lfloor\frac{n}{\frac{n}{l}}\right\rfloor=\left\lfloor l\right\rfloor=l$ . 证毕。</p>
+</blockquote>
+<p>于是乎，我们把 $[l,r]$ 视为一块，分块求和。</p>
+<p>可以证明：块数不会超过 $2\sqrt n$. </p>
+<blockquote>
+<p>当 $i&lt;\sqrt n$ 时，$\left\lfloor\frac{n}{i}\right\rfloor$ 最多一个数一块，最多 $\sqrt n$ 块；当 $i\geqslant\sqrt n$ 时，$\left(\frac{n}{2},n\right]$ 是一块，$\left(\frac{n}{3}\frac{n}{2}\right]$ 是一块，……，$\left(\frac{n}{\sqrt n+1},\frac{n}{\sqrt n}\right]$ 是一块，最多 $\sqrt n$ 块。证毕。</p>
+</blockquote>
+<p><strong>Complexity</strong>：$O(\sqrt n)$ </p>
+<p><strong>Code</strong>：</p>
+<p>以 $\sum\limits_{i=1}^n\left\lfloor\frac{k}{i}\right\rfloor\cdots$ 为例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">long</span> <span class="keyword">long</span> l = <span class="number">1</span>, r; l &lt;= n; l = r + <span class="number">1</span>)&#123;</span><br><span class="line">    <span class="keyword">if</span>(k / l == <span class="number">0</span>)	r = n;</span><br><span class="line">    <span class="keyword">else</span>	r = min(n, k / (k / l));</span><br><span class="line">	... <span class="comment">// calculate the ans</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="常用技巧-2：提取公因数"><a href="#常用技巧-2：提取公因数" class="headerlink" title="常用技巧#2：提取公因数"></a>常用技巧#2：提取公因数</h2><p>两个和式情形：</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^n\sum_{d\mid i}f(d,i)\overset{i\to di}{===}\sum_{d=1}^n\sum_{i=1}^\left\lfloor\frac{n}{d}\right\rfloor f(d,di)</script><p>即考虑 $d$ 对答案的贡献：凡是 $d$ 的倍数都会对答案有贡献。</p>
+<p>三个和式情形：</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^n\sum_{j=1}^m\sum_{d\mid \gcd(i,j)}f(d,i,j)\overset{i\to di,j\to dj}{=====}\sum_{d=1}^{\min(n,m)}\sum_{i=1}^{\left\lfloor\frac{n}{d}\right\rfloor}\sum_{j=1}^{\left\lfloor\frac{m}{d}\right\rfloor}f(d,di,dj)</script><p>即考虑 $d$ 对答案的贡献：凡 $d$ 是 $i,j$ 的公因子就会对答案有贡献。</p>
+<p>更多和式可类似拓展。</p>
+<hr>
+<h2 id="常用技巧-3：技巧2的逆过程"><a href="#常用技巧-3：技巧2的逆过程" class="headerlink" title="常用技巧#3：技巧2的逆过程"></a>常用技巧#3：技巧2的逆过程</h2><script type="math/tex; mode=display">
+\sum\limits_{p=1}^{n}\sum\limits_{d=1}^{\left\lfloor\frac{n}{p}\right\rfloor}f(p,d)=\sum\limits_{1\leqslant p\cdot d\leqslant n}f(p,d)\overset{T=p\cdot d}{===}\sum\limits_{T=1}^{n}\sum\limits_{p\mid T}f\left(p,\frac{T}{p}\right)</script><hr>
+<h2 id="常用技巧-4：一种预处理"><a href="#常用技巧-4：一种预处理" class="headerlink" title="常用技巧#4：一种预处理"></a>常用技巧#4：一种预处理</h2><script type="math/tex; mode=display">
+g(n)=\sum_{d\mid n}f(d,n)</script><p>上式的预处理方式：枚举 $d$，将 $d\mid n$ 的 $g(n)$ 加上贡献 $f(d,n)$. </p>
+<p>复杂度是 $O(nH(n))$，大概是 $O(n\lg n)$ 的。</p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">xyfJASON</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://xyfjason.github.io/2020/07/26/%E6%95%B0%E8%AE%BA%E5%87%BD%E6%95%B0%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">https://xyfjason.github.io/2020/07/26/%E6%95%B0%E8%AE%BA%E5%87%BD%E6%95%B0%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://xyfjason.github.io" target="_blank">xyfJASON</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></div><div class="post_share"><div class="social-share" data-image="/myimg/banner.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"/><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/07/26/%E6%95%B0%E8%AE%BA%E5%87%BD%E6%95%B0%E7%BB%83%E4%B9%A0%E8%AE%B0%E5%BD%95/"><img class="prev-cover" data-src="/gallery/pexels_galaxy.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">数论函数练习记录</div></div></a></div><div class="next-post pull-right"><a href="/2020/07/25/2020%E7%89%9B%E5%AE%A2%E6%9A%91%E6%9C%9F%E5%A4%9A%E6%A0%A1%E8%AE%AD%E7%BB%83%E8%90%A5%EF%BC%88%E7%AC%AC%E4%BA%94%E5%9C%BA%EF%BC%89/"><img class="next-cover" data-src="/myimg/banner.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">2020牛客暑期多校训练营（第五场）</div></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2020/02/19/CDQ分治学习笔记/" title="CDQ分治学习笔记"><img class="relatedPosts_cover" data-src="/gallery/pexels_snowflake.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-02-19</div><div class="relatedPosts_title">CDQ分治学习笔记</div></div></a></div><div class="relatedPosts_item"><a href="/2020/04/18/DSU-on-tree-学习笔记/" title="DSU on tree 学习笔记"><img class="relatedPosts_cover" data-src="/gallery/pexels_tree-snow.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-04-18</div><div class="relatedPosts_title">DSU on tree 学习笔记</div></div></a></div><div class="relatedPosts_item"><a href="/2020/03/25/bitset学习笔记/" title="bitset学习笔记"><img class="relatedPosts_cover" data-src="/gallery/pexels_ball-blur.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-03-25</div><div class="relatedPosts_title">bitset学习笔记</div></div></a></div><div class="relatedPosts_item"><a href="/2020/02/12/关于扫描线算法中线段树标记的理解/" title="关于扫描线算法中线段树标记的理解"><img class="relatedPosts_cover" data-src="/gallery/pexels_starrysky.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-02-12</div><div class="relatedPosts_title">关于扫描线算法中线段树标记的理解</div></div></a></div><div class="relatedPosts_item"><a href="/2020/07/26/数论函数练习记录/" title="数论函数练习记录"><img class="relatedPosts_cover" data-src="/gallery/pexels_galaxy.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-07-26</div><div class="relatedPosts_title">数论函数练习记录</div></div></a></div><div class="relatedPosts_item"><a href="/2020/05/19/树状数组倍增学习笔记/" title="树状数组倍增学习笔记"><img class="relatedPosts_cover" data-src="/gallery/pexels_deer-snow.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-19</div><div class="relatedPosts_title">树状数组倍增学习笔记</div></div></a></div></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div class="vcomment" id="vcomment"></div><script src="https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script><script>var requestSetting = function (from,set) {
+  var from = from
+  var setting = set.split(',').filter(function(item){
+  return from.indexOf(item) > -1
+  });
+  setting = setting.length == 0 ? from :setting;
+  return setting
+}
+
+var guestInfo = requestSetting(['nick','mail','link'],'nick,mail,link')
+var requiredFields = requestSetting(['nick','mail'],'nick,mail')
+
+window.valine = new Valine({
+  el:'#vcomment',
+  appId: 'ovQ7Ukrh29Ex4n5TKqN19d5D-MdYXbMMI',
+  appKey: 'bGKUwhryO4w9EE9TcpEaOKGF',
+  placeholder: 'Please leave your footprints',
+  avatar: 'monsterid',
+  meta: guestInfo,
+  pageSize: '10',
+  lang: 'zh-CN',
+  recordIP: false,
+  serverURLs: '',
+  emojiCDN: '',
+  emojiMaps: "",
+  enableQQ: false,
+  requiredFields: requiredFields
+});</script></div></article></main><footer id="footer" style="background-image: url(/gallery/pexels_numbers1.jpg)" data-type="photo"><div id="footer-wrap"><div class="copyright">&copy;2020 By xyfJASON</div><div class="framework-info"><span>驱动 </span><a href="https://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><button id="readmode" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font_plus" title="放大字体"><i class="fas fa-plus"></i></button><button id="font_minus" title="缩小字体"><i class="fas fa-minus"></i></button><button id="darkmode" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" title="设置"><i class="fas fa-cog"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fas fa-comments"></i></a><button class="close" id="mobile-toc-button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a href="https://github.com/wzpan/hexo-generator-search" target="_blank" rel="noopener" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div class="search-mask"></div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  CommonHTML: {
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "HTML-CSS": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "SVG": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  }
+});
+</script><script type="text/x-mathjax-config">MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for (i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script defer id="ribbon" src="/js/third-party/canvas-ribbon.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><script src="/js/search/local-search.js"></script><script>if (document.getElementsByClassName('mermaid').length) {
+  loadScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js',function () {
+    mermaid.initialize({
+      theme: 'default',
+  })
+})
+}</script><script>var endLoading = function () {
+  document.body.style.overflow = 'auto';
+  document.getElementById('loading-box').classList.add("loaded")
+}
+window.addEventListener('load',endLoading)</script></body></html>
