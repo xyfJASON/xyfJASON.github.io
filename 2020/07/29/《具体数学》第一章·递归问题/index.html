@@ -1,0 +1,395 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>《具体数学》第一章·递归问题 | xyfJASON</title><meta name="description" content="为了记录学习过的《具体数学》的内容，同时也为了激励自己肝完它，特开一栏记录学习笔记第一章·递归问题分 3 节，主要包括 $\textbf{Hanoi}$ 塔问题、平面上直线分割问题、约瑟夫问题。其中，个人认为约瑟夫问题的讨论相当具有启发性。"><meta name="keywords" content="学习笔记"><meta name="author" content="xyfJASON"><meta name="copyright" content="xyfJASON"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/myimg/myfavicon.png"><link rel="canonical" href="https://xyfjason.github.io/2020/07/29/%E3%80%8A%E5%85%B7%E4%BD%93%E6%95%B0%E5%AD%A6%E3%80%8B%E7%AC%AC%E4%B8%80%E7%AB%A0%C2%B7%E9%80%92%E5%BD%92%E9%97%AE%E9%A2%98/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta property="og:type" content="article"><meta property="og:title" content="《具体数学》第一章·递归问题"><meta property="og:url" content="https://xyfjason.github.io/2020/07/29/%E3%80%8A%E5%85%B7%E4%BD%93%E6%95%B0%E5%AD%A6%E3%80%8B%E7%AC%AC%E4%B8%80%E7%AB%A0%C2%B7%E9%80%92%E5%BD%92%E9%97%AE%E9%A2%98/"><meta property="og:site_name" content="xyfJASON"><meta property="og:description" content="为了记录学习过的《具体数学》的内容，同时也为了激励自己肝完它，特开一栏记录学习笔记第一章·递归问题分 3 节，主要包括 $\textbf{Hanoi}$ 塔问题、平面上直线分割问题、约瑟夫问题。其中，个人认为约瑟夫问题的讨论相当具有启发性。"><meta property="og:image" content="https://xyfjason.github.io/gallery/pexels_study1.jpg"><meta property="article:published_time" content="2020-07-29T13:07:02.000Z"><meta property="article:modified_time" content="2020-07-30T13:27:07.367Z"><meta name="twitter:card" content="summary"><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#fff')
+  }
+}
+
+var getCookies = function (name) {
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) return parts.pop().split(';').shift()
+}
+
+var autoChangeMode = 'false'
+var t = getCookies('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (Cookies.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="prev" title="2020杭电多校（第四场）" href="https://xyfjason.github.io/2020/07/30/2020%E6%9D%AD%E7%94%B5%E5%A4%9A%E6%A0%A1%EF%BC%88%E7%AC%AC%E5%9B%9B%E5%9C%BA%EF%BC%89/"><link rel="next" title="2020杭电多校（第三场）" href="https://xyfjason.github.io/2020/07/28/2020%E6%9D%AD%E7%94%B5%E5%A4%9A%E6%A0%A1%EF%BC%88%E7%AC%AC%E4%B8%89%E5%9C%BA%EF%BC%89/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容:${query}"}},
+  translate: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  runtime: false,
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  highlightCopy: true,
+  highlightLang: true,
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isanchor: false    
+}</script><script>var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isSidebar: true
+  }</script><noscript><style>
+#nav {
+  opacity: 1
+}
+.justified-gallery img{
+  opacity: 1
+}
+</style></noscript><meta name="generator" content="Hexo 4.2.1"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/myimg/myavatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">83</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">11</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">42</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E9%A1%B9%E7%9B%AE/"><i class="fa-fw fas fa-graduation-cap"></i><span> 项目文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E9%9A%8F%E7%AC%94/"><i class="fa-fw fas fa-align-center"></i><span> 随笔文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E3%80%8A%E5%85%B7%E4%BD%93%E6%95%B0%E5%AD%A6%E3%80%8B/"><i class="fa-fw fas fa-book"></i><span> 《具体数学》</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/website/"><i class="fa-fw fas fa-magic"></i><span> 网站收藏</span></a></div></div></div></div><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#textbf-Hanoi-塔问题-The-Tower-of-Hanoi"><span class="toc-number">1.</span> <span class="toc-text">$\textbf{Hanoi}$ 塔问题 The Tower of Hanoi</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Notes"><span class="toc-number">1.1.</span> <span class="toc-text">Notes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#习题"><span class="toc-number">1.2.</span> <span class="toc-text">习题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#平面上的直线-Lines-on-the-Plane"><span class="toc-number">2.</span> <span class="toc-text">平面上的直线 Lines on the Plane</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Notes-1"><span class="toc-number">2.1.</span> <span class="toc-text">Notes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#变式"><span class="toc-number">2.2.</span> <span class="toc-text">变式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#约瑟夫问题-The-Josephus-Problem"><span class="toc-number">3.</span> <span class="toc-text">约瑟夫问题 The Josephus Problem</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#基础问题"><span class="toc-number">3.1.</span> <span class="toc-text">基础问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二进制视角"><span class="toc-number">3.2.</span> <span class="toc-text">二进制视角</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#成套方法求解递归式-Repertoire-Method"><span class="toc-number">3.3.</span> <span class="toc-text">成套方法求解递归式 Repertoire Method</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#推广递归式的进制视角"><span class="toc-number">3.4.</span> <span class="toc-text">推广递归式的进制视角</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#习题-1"><span class="toc-number">3.5.</span> <span class="toc-text">习题</span></a></li></ol></li></ol></div></div></div><div class="code-close" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/gallery/pexels_study1.jpg)"><nav id="nav"><span class="pull-left" id="blog_name"><a class="blog_title" id="site-name" href="/">xyfJASON</a></span><span class="pull-right menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E9%A1%B9%E7%9B%AE/"><i class="fa-fw fas fa-graduation-cap"></i><span> 项目文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E9%9A%8F%E7%AC%94/"><i class="fa-fw fas fa-align-center"></i><span> 随笔文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E3%80%8A%E5%85%B7%E4%BD%93%E6%95%B0%E5%AD%A6%E3%80%8B/"><i class="fa-fw fas fa-book"></i><span> 《具体数学》</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/website/"><i class="fa-fw fas fa-magic"></i><span> 网站收藏</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">《具体数学》第一章·递归问题</div></div><div id="post-meta"><div class="meta-firstline"><time class="post-meta__date"><span class="post-meta__date-created" title="发表于 2020-07-29 21:07:02"><i class="far fa-calendar-alt fa-fw"></i> 发表于 2020-07-29</span><span class="post-meta__separator">|</span><span class="post-meta__date-updated" title="更新于 2020-07-30 21:27:07"><i class="fas fa-history fa-fw"></i> 更新于 2020-07-30</span></time><span class="post-meta__categories"><span class="post-meta__separator">|</span><i class="fas fa-inbox fa-fw post-meta__icon"></i><a class="post-meta__categories" href="/categories/%E3%80%8A%E5%85%B7%E4%BD%93%E6%95%B0%E5%AD%A6%E3%80%8B/">《具体数学》</a></span></div><div class="meta-secondline"> <span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta__icon"></i><span>字数总计:</span><span class="word-count">2.5k</span><span class="post-meta__separator">|</span><i class="far fa-clock fa-fw post-meta__icon"></i><span>阅读时长: 10 分钟</span></span></div><div class="meta-thirdline"><span class="post-meta-pv-cv"><span class="post-meta__separator">|</span><i class="far fa-eye fa-fw post-meta__icon"></i><span>阅读量:</span><span id="busuanzi_value_page_pv"></span></span><span class="post-meta-commentcount"></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><blockquote>
+<p>第一章·递归问题分 3 节，主要包括 $\textbf{Hanoi}$ 塔问题、平面上直线分割问题、约瑟夫问题。其中，个人认为约瑟夫问题的讨论相当具有启发性。</p>
+</blockquote>
+<h1 id="textbf-Hanoi-塔问题-The-Tower-of-Hanoi"><a href="#textbf-Hanoi-塔问题-The-Tower-of-Hanoi" class="headerlink" title="$\textbf{Hanoi}$ 塔问题 The Tower of Hanoi"></a>$\textbf{Hanoi}$ 塔问题 The Tower of Hanoi</h1><h2 id="Notes"><a href="#Notes" class="headerlink" title="Notes"></a>Notes</h2><p>这是个超级经典的递归问题了，不多做解释。设 $T_n$ 是 $n$ 个圆盘的移动次数，那么有递归式：</p>
+<script type="math/tex; mode=display">
+\begin{cases}T_0=0\\T_n=2T_{n-1}+1\end{cases}</script><p>两边同时加一转化成等比数列，或者用数学归纳法，最后解得：</p>
+<script type="math/tex; mode=display">
+T_n=2^n-1</script><h2 id="习题"><a href="#习题" class="headerlink" title="习题"></a>习题</h2><p>书上的习题有一些 $\textbf{Hanoi}$ 塔问题的变式，在此挑一些记录一下：</p>
+<ul>
+<li><p>不允许在最左边的 $A$ 柱和最右边的 $B$ 柱之间直接移动：</p>
+<script type="math/tex; mode=display">
+T_n=T_{n-1}+1+T_{n-1}+1+T_{n-1}=3T_{n-1}+2\implies T_n=3^n-1</script><p>证明：这种移动规则下，$3$ 根柱子上都会出现 $n$ 个圆盘的每一种正确叠放。</p>
+<p>证：宏观来看，一共就 $3^n$ 种可能，而 $T_n=3^n-1$，一定遍历了所有可能的叠放方式。$\square$ </p>
+<blockquote>
+<p>批注：这问题问得很玄学，转换角度思考就变简单了。</p>
+</blockquote>
+</li>
+<li><p>是否存在某种初始情形和结束情形，使得需要多于 $2^n-1$ 的移动？</p>
+<p>不存在，<strong>归纳</strong>：如果最大盘不动，最多 $2^{n-1}-1$ 次；否则，最多 $(2^{n-1}-1)+1+(2^{n-1}-1)=2^n-1$ 次。$\square$ </p>
+<blockquote>
+<p>批注：不知道咋整就归纳，哈哈</p>
+</blockquote>
+</li>
+<li><p>要求移动必须是顺时针方向（只能 $A\to B,B\to C,C\to A$），设 $Q_n$ 是 $A\to B$ 的最少移动次数，$R_n$ 是 $B\to A$ 的最少移动次数，求证：</p>
+<script type="math/tex; mode=display">
+Q_n=\begin{cases}0&,n=0\\2R_{n-1}+1&,n>0\end{cases}\quad\quad R_n=\begin{cases}0&,n=0\\Q_n+Q_{n-1}+1&,n>0\end{cases}</script><p>证：意思就是 $Q_n$ 是跨一步，$R_n$ 是跨两步。</p>
+<p>跨一步这样完成：$n-1$ 个盘 $A\to C$，$1$ 个盘 $A\to B$，$n-1$ 个盘 $C\to B$，故 $Q_n=R_{n-1}+1+R_{n-1}=2R_{n-1}+1$；</p>
+<p>跨两步这样完成：$n-1$ 个盘 $A\to C$，$1$ 个盘 $A\to B$，$n-1$ 个盘 $C\to A$，$1$ 个盘 $B\to C$，$n-1$ 个盘 $A\to C$，故 $R_n=R_{n-1}+1+Q_{n-1}+1+R_{n-1}=(2R_{n-1}+1)+Q_{n-1}+1=Q_n+Q_{n-1}+1$. $\square$ </p>
+<blockquote>
+<p>注：遗留问题：为什么跨两步不能这样：$n-1$ 个盘 $A\to C$，$1$ 个盘 $A\to B$，$n-1$ 个盘 $C\to B$，$n$ 个盘 $B\to C$。这样是 $R_n=R_{n-1}+1+R_{n-1}+Q_n=2Q_n$. 可以验证答案更差，但是怎样才能避免这样想？</p>
+</blockquote>
+</li>
+<li><p>$n$ 种尺寸，第 $k$ 种有 $m_k$ 个圆盘，求最少移动次数 $A(m_1,\cdots,m_k)$. </p>
+<script type="math/tex; mode=display">
+A(m_1,\cdots,m_n)=2A(m_1,\cdots,m_{n-1})+m_n=4A(m_1,\cdots,m_{n-2})+2m_{n-1}+m_n=\cdots=\sum\limits_{i=0}^{n-1}2^im_{n-i}</script></li>
+</ul>
+<hr>
+<h1 id="平面上的直线-Lines-on-the-Plane"><a href="#平面上的直线-Lines-on-the-Plane" class="headerlink" title="平面上的直线 Lines on the Plane"></a>平面上的直线 Lines on the Plane</h1><h2 id="Notes-1"><a href="#Notes-1" class="headerlink" title="Notes"></a>Notes</h2><p>也是一个经典问题了，一条新的直线和原来的 $n-1$ 条直线最多有 $n-1$ 个交点，就最多增加 $n$ 个面。</p>
+<blockquote>
+<p>为什么？注意这条直线被划分成了 $n$ 段，每一段两侧是两个现在不同、但是之前相同的面，所以净增加了 $n$ 个面。</p>
+</blockquote>
+<p>由此，我们有递归式：</p>
+<script type="math/tex; mode=display">
+\begin{cases}L_0=1\\L_n=L_{n-1}+n\end{cases}</script><p>累和，或者数学归纳法，解得：</p>
+<script type="math/tex; mode=display">
+L_n=\frac{n(n+1)}{2}+1</script><h2 id="变式"><a href="#变式" class="headerlink" title="变式"></a>变式</h2><ul>
+<li><p>把直线改成折线：</p>
+<p><img src= "/img/loading.gif" data-src="http://acm.hdu.edu.cn/data/images/C40-1008-1.jpg" alt="图片来源：http://acm.hdu.edu.cn/showproblem.php?pid=2050" style="zoom:67%;" /></p>
+<p>注意到，一条折线相当于两条直线相交后抹掉一半，抹掉一半后平面数减 $2$，所以 $Z_n=L_{2n}-2n$. </p>
+<blockquote>
+<p>可能还是不好理解（至少我理解了很久），这么考虑：新加一条折线进来，从它的顶点向被抹掉的那个方向看去，抹掉的直线本应该把这个区域分成 $3$ 部分，但现在它是 $1$ 部分，所以少了 $2$。</p>
+<p>基于此我们也可以得到递归式：加入新折线的一条边，有 $2n-2$ 个新交点，增加 $2n-1$ 个面，再加入另一条边，有 $2n-1$ 个新交点（包括新折线的顶点），增加 $2n$ 个面，但是顶点那个交点不争气要减 $2$，所以总共新增 $4n-3$ 个面，即 $Z_n=Z_{n-1}+4n-3$. </p>
+</blockquote>
+</li>
+<li><p>$\text{Z}$ 字型（两平行半直线加一条直线段）划分平面：沿用上面的思路可得递归式：$Z_n=Z_{n-1}+(3n-3+1)+(3n-3+1)+(3n-1+1)-2-2=Z_{n-1}+9n-8$，解得：$Z_n=\frac{9}{2}n^2-\frac{7}{2}n+1$. </p>
+</li>
+<li><p>厚奶酪上划直切痕，得到的三维区域最大个数：新增一个面，前 $n-1$ 个面在这个新平面上最多得到 $L_{n-1}$ 个区域，考虑每个区域两侧可以知道新增了 $L_{n-1}$ 个块，所以 $P_n=P_{n-1}+L_{n-1}$. </p>
+<blockquote>
+<p>这波降维打击实在有趣！</p>
+</blockquote>
+</li>
+</ul>
+<hr>
+<h1 id="约瑟夫问题-The-Josephus-Problem"><a href="#约瑟夫问题-The-Josephus-Problem" class="headerlink" title="约瑟夫问题 The Josephus Problem"></a>约瑟夫问题 The Josephus Problem</h1><p>重点来了！</p>
+<h2 id="基础问题"><a href="#基础问题" class="headerlink" title="基础问题"></a>基础问题</h2><p>$n$ 个人围圈，隔一个死一个，问最后剩下的人的编号 $J(n)$. </p>
+<ul>
+<li>偶数情况：$2n$ 个人，死了一圈之后，剩下 $n$ 个人编号是：$1,3,5,\cdots,2n-1$，这就是个把原编号 $k$ 改成 $2k-1$ 之后的 $n$ 人约瑟夫问题，所以 $J(2n)=2J(n)-1$；</li>
+<li>奇数情况：$2n+1$ 个人，死了一圈之后，剩下 $n$ 个人编号是：$3,5,7,\cdots,2n+1$，这就是个把原编号 $k$ 改成 $2k+1$ 之后的 $n$ 人约瑟夫问题，所以 $J(2n+1)=2J(n)+1$. </li>
+</ul>
+<p>综上，再加上初始条件，有递归式：</p>
+<script type="math/tex; mode=display">
+\begin{cases}J(1)=1\\J(2n)=2J(n)-1\\J(2n+1)=2J(n)+1\end{cases}</script><p>至于怎么解这个递归式……我们可以<strong>打表</strong>（$\text{OIer &amp; ACMer}$ 狂喜）：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">n</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">6</th>
+<th style="text-align:center">7</th>
+<th style="text-align:center">8</th>
+<th style="text-align:center">9</th>
+<th style="text-align:center">10</th>
+<th style="text-align:center">11</th>
+<th style="text-align:center">12</th>
+<th style="text-align:center">13</th>
+<th style="text-align:center">14</th>
+<th style="text-align:center">15</th>
+<th style="text-align:center">16</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">J(n)​</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">9</td>
+<td style="text-align:center">11</td>
+<td style="text-align:center">13</td>
+<td style="text-align:center">15</td>
+<td style="text-align:center">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>观察得到：</p>
+<script type="math/tex; mode=display">
+J(n)=2\left(n-2^{\lfloor\lg n\rfloor}\right)+1</script><p>或者按书上的写法，是 $J(2^m+l)=2l+1,\quad m\geqslant0,\quad 0\leqslant l&lt;2^m$. 证明数学归纳法即可。</p>
+<h2 id="二进制视角"><a href="#二进制视角" class="headerlink" title="二进制视角"></a>二进制视角</h2><p>这一部分是我觉得最 Amazing 的地方了。</p>
+<p>把上表写成二进制：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">n​</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">10</th>
+<th style="text-align:center">11</th>
+<th style="text-align:center">100</th>
+<th style="text-align:center">101</th>
+<th style="text-align:center">110</th>
+<th style="text-align:center">111</th>
+<th style="text-align:center">1000</th>
+<th style="text-align:center">1001</th>
+<th style="text-align:center">1010</th>
+<th style="text-align:center">1011</th>
+<th style="text-align:center">1100</th>
+<th style="text-align:center">1101</th>
+<th style="text-align:center">1110</th>
+<th style="text-align:center">1111</th>
+<th style="text-align:center">10000</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">J(n)​</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">11</td>
+<td style="text-align:center">001</td>
+<td style="text-align:center">011</td>
+<td style="text-align:center">101</td>
+<td style="text-align:center">111</td>
+<td style="text-align:center">0001</td>
+<td style="text-align:center">0011</td>
+<td style="text-align:center">0101</td>
+<td style="text-align:center">0111</td>
+<td style="text-align:center">1001</td>
+<td style="text-align:center">1011</td>
+<td style="text-align:center">1101</td>
+<td style="text-align:center">1111</td>
+<td style="text-align:center">00001</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>发现一个神奇的现象：把 $n$ 的二进制<strong>向左循环滚动一位</strong>，就得到了 $J(n)$！</p>
+<blockquote>
+<p>其实看看通项公式，$n-2^{\lfloor\lg n\rfloor}$ 就是删掉最高位的剩下的部分，乘 $2$ 就是左移一位，加一就是把最高位加到最低位去——所以一通操作下来，就是向左循环一位。</p>
+</blockquote>
+<p>如果我们进行套娃式迭代——不停地向左循环，但是注意前导 $0$ 会消失掉，所以足够多次迭代下去后得到的数就是由所有 $1$ 组成的二进制数，即 $J(J(J(\cdots J(n))))=2^{\nu(n)}-1$，其中 $\nu(n)$ 是 $n$ 在二进制下 $1$ 的个数。</p>
+<h2 id="成套方法求解递归式-Repertoire-Method"><a href="#成套方法求解递归式-Repertoire-Method" class="headerlink" title="成套方法求解递归式 Repertoire Method"></a>成套方法求解递归式 Repertoire Method</h2><p>我们把 $J(n)$ 的递归式给推广一下：</p>
+<script type="math/tex; mode=display">
+\begin{cases}f(1)=\alpha\\f(2n)=2f(n)+\beta\\f(2n+1)=2f(n)+\gamma\end{cases}</script><p>（$J(n)$ 是 $\alpha=1,\beta=-1,\gamma=1$ 的特殊情况）。我们仍然可以打表找规律，但是可以用<strong>成套方法</strong>（这名字好奇怪）解它。</p>
+<p>注意到决定上式结果的是 $3$ 个参数 $\alpha,\beta,\gamma$，所以我们可以设 $f(n)=\alpha A(n)+\beta B(n)+\gamma C(n)$ 是它的解（充分利用已知条件嘛）。下面我们找 $3$ 个特解：</p>
+<ul>
+<li>令 $f(n)=1$，解得：$\alpha=1,\beta=-1,\gamma=-1$，得到：$A(n)-B(n)-C(n)=1$；</li>
+<li>令 $f(n)=n$，解得：$\alpha=1,\beta=0,\gamma=1$，得到：$A(n)+C(n)=n$；</li>
+<li>令 $\alpha=1,\beta=0,\gamma=0$，有 $f(n)=A(n)$，得到：$\begin{cases}A(1)=1\\A(2n)=2A(n)\\A(2n+1)=2A(n)\end{cases}$，解得：$A(n)=2^{\lfloor\lg n\rfloor}$. </li>
+</ul>
+<p>联立上述 $3$ 式，解得：$C(n)=n-2^{\lfloor\lg n\rfloor},\;B(n)=2^{\lfloor\lg n\rfloor+1}-n-1$. 所以我们得到了递归式的解：</p>
+<script type="math/tex; mode=display">
+f(n)=2^{\lfloor\lg n\rfloor}\alpha+\left(2^{\lfloor\lg n\rfloor+1}-n-1\right)\beta+\left(n-2^{\lfloor\lg n\rfloor}\right)\gamma</script><p>或者用书上的写法（ $n=2^m+l$ ），就是：$f(n)=2^m\alpha+\left(2^m-1-l\right)\beta+l\gamma$. </p>
+<blockquote>
+<p>有木有感觉很玄学！这三个特解咋冒出来的～特别是第三个特解，好生奇怪！</p>
+<p>如果我们把函数 $f(n)$ 看作一个向量，那它就是 $A(n),B(n),C(n)$ 的线性组合，我们找到了三个特解，得到线性方程组：</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}1&-1&-1\\1&0&1\\1&0&0\end{bmatrix}\begin{bmatrix}A(n)\\B(n)\\C(n)\end{bmatrix}=\begin{bmatrix}1\\n\\2^m\end{bmatrix}</script><p>理论上，给定三个线性无关的向量 $[\alpha,\beta,\gamma]$ 和分别对应的的 $f(n)$，那么就可以解出 $[A(n),B(n),C(n)]$。但是问题的关键就在于，任给一个 $[\alpha,\beta,\gamma]$，解 $f(n)$ 不一定简单。反过来，给定 $f(n)$ 解 $[\alpha,\beta,\gamma]$ 倒是简单，但是给定的 $f(n)$ 可能不合法，即根本就不是原递归式的解。所以我感觉这个“成套方法”有很多凑的成分……</p>
+</blockquote>
+<h2 id="推广递归式的进制视角"><a href="#推广递归式的进制视角" class="headerlink" title="推广递归式的进制视角"></a>推广递归式的进制视角</h2><p>对于推广的递归式，改写为：</p>
+<script type="math/tex; mode=display">
+\begin{cases}f(1)=\alpha\\f(2n+j)=2f(n)+\beta_j&j=0,1,\;n\geqslant1\end{cases}</script><p>我们用二进制展开：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+f\Big({(b_mb_{m-1}\cdots b_1b_0)}_2\Big)&=2f\Big({(b_mb_{m-1}\cdots b_1)}_2\Big)+\beta_{b_0}
+\\&=4f\Big({(b_mb_{m-1}\cdots b_2)}_2\Big)+2\beta_{b_1}+\beta_{b_0}\\&=\cdots
+\\&=2^m\cdot1+2^{m-1}\beta_{b_{m-1}}+\cdots+2\beta_{b_1}+\beta_{b_0}
+\\&={(\alpha\beta_{b_{m-1}}\cdots\beta_{b_1}\beta_{b_0})}_2
+\end{align}</script><p>当然，这里不要求二进制的每一位必须是 $0,1$，而是任意数字都行。</p>
+<blockquote>
+<p>怎么理解？把 $n$ 写作二进制，其中 $0$ 改成 $\beta_0$，$1$ 改成 $\beta_1$，最高位改成 $\alpha$，就得到了 $f(n)$. </p>
+</blockquote>
+<p><br></p>
+<p>我们还可以推广，如果递归式长这样：</p>
+<script type="math/tex; mode=display">
+\begin{cases}f(j)=\alpha_j&1\leqslant j<d\\f(dn+j)=cf(n)+\beta_j&0\leqslant j<d,\;n\geqslant1\end{cases}</script><p>那么用 $d$ 进制展开：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+f\Big({(b_mb_{m-1}\cdots b_1b_0)}_d\Big)&=cf\Big({(b_mb_{m-1}\cdots b_1)}_d\Big)+\beta_{b_0}\\
+&=c^2f\Big({(b_mb_{m-1}\cdots b_2)}_d\Big)+c\beta_{b_1}+\beta_{b_0}\\&=\cdots\\
+&=c^m\cdot\alpha_{b_m}+c^{m-1}\beta_{b_{m-1}}+\cdots+c\beta_{b_1}+\beta_{b_0}\\
+&={(\alpha_{b_m}\beta_{b_{m-1}}\cdots\beta_{b_1}\beta_{b_0})}_c
+\end{align}</script><p>发现得到一个 $c$ 进制结果！实在是妙呀！</p>
+<h2 id="习题-1"><a href="#习题-1" class="headerlink" title="习题"></a>习题</h2><ul>
+<li><p>用成套方法解四参数递归式：</p>
+<script type="math/tex; mode=display">
+\begin{cases}g(1)=\alpha\\g(2n+j)=3g(n)+\gamma n+\beta_j&j=0,1,\; n\geqslant 1\end{cases}</script><p>解：设 $g(n)=\alpha A(n)+\gamma B(n)+\beta_0C(n)+\beta_1D(n)$ 是它的解。这是四参数递归式，我们需要找到四个特解。</p>
+<ul>
+<li>令 $\gamma=0$，问题转化成了之前解决的问题，有解：$g\Big({(b_mb_{m-1}\cdots b_1b_0)}_2\Big)={(\alpha\beta_{b_{m-1}}\cdots\beta_{b_1}\beta_{b_0})}_3$. 随便取 $3$ 个线性无关的 $[\alpha,\beta_0,\beta_1]$，就能确定下 $A(n),C(n),D(n)$；</li>
+<li>令 $g(n)=n$，解得：$(\alpha,\gamma,\beta_0,\beta_1)=(1,-1,0,1)$，得到：$A(n)-B(n)+D(n)=n$. </li>
+</ul>
+<p>于是我们解决了这个问题（虽然没有写出显式的表达式）。</p>
+</li>
+<li><p>用成套方法解五参数递归式：</p>
+<script type="math/tex; mode=display">
+\begin{cases}h(1)=\alpha\\h(2n+j)=4h(n)+\gamma_j n+\beta_j&j=0,1,\; n\geqslant 1\end{cases}</script><p>解：设 $h(n)=\alpha A(n)+\gamma_0 B(n)+\gamma_1C(n)+\beta_0D(n)+\beta_1E(n)$ 是它的解。这是五参数递归式，我们需要找到五个特解。</p>
+<ul>
+<li>令 $\gamma_0=\gamma_1=0$，问题转化成了之前解决的问题，可以确定 $A(n),D(n),E(n)$；</li>
+<li>令 $h(n)=n$，解得：$(\alpha,\gamma_0,\gamma_1,\beta_0,\beta_1)=(1,-2,-2,0,1)$，得到：$A(n)-2B(n)-2C(n)+E(n)=n$；</li>
+<li>令 $h(n)=n^2$（注意观察，平方项正好抵消，所以这么设又解），解得：$(\alpha,\gamma_0,\gamma_1,\beta_0,\beta_1)=(1,0,4,0,1)$，得到：$A(n)+4C(n)+E(n)=n^2$. </li>
+</ul>
+<p>联立，问题解决。</p>
+</li>
+</ul>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">xyfJASON</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://xyfjason.github.io/2020/07/29/%E3%80%8A%E5%85%B7%E4%BD%93%E6%95%B0%E5%AD%A6%E3%80%8B%E7%AC%AC%E4%B8%80%E7%AB%A0%C2%B7%E9%80%92%E5%BD%92%E9%97%AE%E9%A2%98/">https://xyfjason.github.io/2020/07/29/%E3%80%8A%E5%85%B7%E4%BD%93%E6%95%B0%E5%AD%A6%E3%80%8B%E7%AC%AC%E4%B8%80%E7%AB%A0%C2%B7%E9%80%92%E5%BD%92%E9%97%AE%E9%A2%98/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://xyfjason.github.io" target="_blank">xyfJASON</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></div><div class="post_share"><div class="social-share" data-image="/myimg/banner.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"/><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/07/30/2020%E6%9D%AD%E7%94%B5%E5%A4%9A%E6%A0%A1%EF%BC%88%E7%AC%AC%E5%9B%9B%E5%9C%BA%EF%BC%89/"><img class="prev-cover" data-src="/myimg/banner.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">2020杭电多校（第四场）</div></div></a></div><div class="next-post pull-right"><a href="/2020/07/28/2020%E6%9D%AD%E7%94%B5%E5%A4%9A%E6%A0%A1%EF%BC%88%E7%AC%AC%E4%B8%89%E5%9C%BA%EF%BC%89/"><img class="next-cover" data-src="/myimg/banner.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">2020杭电多校（第三场）</div></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2020/02/19/CDQ分治学习笔记/" title="CDQ分治学习笔记"><img class="relatedPosts_cover" data-src="/gallery/pexels_snowflake.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-02-19</div><div class="relatedPosts_title">CDQ分治学习笔记</div></div></a></div><div class="relatedPosts_item"><a href="/2020/04/18/DSU-on-tree-学习笔记/" title="DSU on tree 学习笔记"><img class="relatedPosts_cover" data-src="/gallery/pexels_tree-snow.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-04-18</div><div class="relatedPosts_title">DSU on tree 学习笔记</div></div></a></div><div class="relatedPosts_item"><a href="/2020/03/25/bitset学习笔记/" title="bitset学习笔记"><img class="relatedPosts_cover" data-src="/gallery/pexels_ball-blur.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-03-25</div><div class="relatedPosts_title">bitset学习笔记</div></div></a></div><div class="relatedPosts_item"><a href="/2020/02/12/关于扫描线算法中线段树标记的理解/" title="关于扫描线算法中线段树标记的理解"><img class="relatedPosts_cover" data-src="/gallery/pexels_starrysky.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-02-12</div><div class="relatedPosts_title">关于扫描线算法中线段树标记的理解</div></div></a></div><div class="relatedPosts_item"><a href="/2020/07/26/数论函数学习笔记/" title="数论函数学习笔记"><img class="relatedPosts_cover" data-src="/gallery/pexels_numbers1.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-07-26</div><div class="relatedPosts_title">数论函数学习笔记</div></div></a></div><div class="relatedPosts_item"><a href="/2020/07/26/数论函数练习记录/" title="数论函数练习记录"><img class="relatedPosts_cover" data-src="/gallery/pexels_galaxy.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-07-26</div><div class="relatedPosts_title">数论函数练习记录</div></div></a></div></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div class="vcomment" id="vcomment"></div><script src="https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script><script>var requestSetting = function (from,set) {
+  var from = from
+  var setting = set.split(',').filter(function(item){
+  return from.indexOf(item) > -1
+  });
+  setting = setting.length == 0 ? from :setting;
+  return setting
+}
+
+var guestInfo = requestSetting(['nick','mail','link'],'nick,mail,link')
+var requiredFields = requestSetting(['nick','mail'],'nick,mail')
+
+window.valine = new Valine({
+  el:'#vcomment',
+  appId: 'ovQ7Ukrh29Ex4n5TKqN19d5D-MdYXbMMI',
+  appKey: 'bGKUwhryO4w9EE9TcpEaOKGF',
+  placeholder: 'Please leave your footprints',
+  avatar: 'monsterid',
+  meta: guestInfo,
+  pageSize: '10',
+  lang: 'zh-CN',
+  recordIP: false,
+  serverURLs: '',
+  emojiCDN: '',
+  emojiMaps: "",
+  enableQQ: false,
+  requiredFields: requiredFields
+});</script></div></article></main><footer id="footer" style="background-image: url(/gallery/pexels_study1.jpg)" data-type="photo"><div id="footer-wrap"><div class="copyright">&copy;2020 By xyfJASON</div><div class="framework-info"><span>驱动 </span><a href="https://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><button id="readmode" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font_plus" title="放大字体"><i class="fas fa-plus"></i></button><button id="font_minus" title="缩小字体"><i class="fas fa-minus"></i></button><button id="darkmode" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" title="设置"><i class="fas fa-cog"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fas fa-comments"></i></a><button class="close" id="mobile-toc-button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a href="https://github.com/wzpan/hexo-generator-search" target="_blank" rel="noopener" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div class="search-mask"></div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  CommonHTML: {
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "HTML-CSS": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "SVG": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  }
+});
+</script><script type="text/x-mathjax-config">MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for (i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script defer id="ribbon" src="/js/third-party/canvas-ribbon.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><script src="/js/search/local-search.js"></script><script>if (document.getElementsByClassName('mermaid').length) {
+  loadScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js',function () {
+    mermaid.initialize({
+      theme: 'default',
+  })
+})
+}</script><script>var endLoading = function () {
+  document.body.style.overflow = 'auto';
+  document.getElementById('loading-box').classList.add("loaded")
+}
+window.addEventListener('load',endLoading)</script></body></html>
