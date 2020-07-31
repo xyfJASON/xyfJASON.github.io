@@ -1473,10 +1473,10 @@ pre .addition {
   color: #105ede;
 }
 pre .meta {
-  color: #7c4dff;
+  color: #c792ea;
 }
 pre .comment {
-  color: rgba(149,165,166,0.8);
+  color: #676e95;
 }
 pre .variable,
 pre .attribute,
@@ -1490,10 +1490,10 @@ pre .css .id,
 pre .tag .name,
 pre .css .class,
 pre .css .pseudo {
-  color: #e53935;
+  color: #ff5370;
 }
 pre .tag {
-  color: #39adb5;
+  color: #89ddff;
 }
 pre .number,
 pre .preprocessor,
@@ -1501,10 +1501,10 @@ pre .literal,
 pre .params,
 pre .constant,
 pre .command {
-  color: #f76d47;
+  color: #f78c6c;
 }
 pre .built_in {
-  color: #ffb62c;
+  color: #ffcb6b;
 }
 pre .ruby .class .title,
 pre .css .rules .attribute,
@@ -1517,12 +1517,12 @@ pre .xml .cdata,
 pre .special,
 pre .number,
 pre .formula {
-  color: #91b859;
+  color: #c3e88d;
 }
 pre .keyword,
 pre .title,
 pre .css .hexcolor {
-  color: #39adb5;
+  color: #89ddff;
 }
 pre .function,
 pre .python .decorator,
@@ -1532,19 +1532,19 @@ pre .ruby .title .keyword,
 pre .perl .sub,
 pre .javascript .title,
 pre .coffeescript .title {
-  color: #6182b8;
+  color: #82aaff;
 }
 pre .tag .attr,
 pre .javascript .function {
-  color: #7c4dff;
+  color: #c792ea;
 }
 #article-container pre,
 #article-container figure.highlight {
   overflow: auto;
   margin: 0 0 1rem;
   padding: 0;
-  background: #f6f8fa;
-  color: #90a4ae;
+  background: #292d3e;
+  color: #a6accd;
   line-height: 20px;
 }
 blockquote {
@@ -1586,7 +1586,7 @@ blockquote footer cite:before {
 #article-container pre code {
   padding: 0;
   background: none;
-  color: #90a4ae;
+  color: #a6accd;
   text-shadow: none;
 }
 #article-container figure.highlight {
@@ -1598,7 +1598,7 @@ blockquote footer cite:before {
   border: none;
 }
 #article-container figure.highlight .line.marked {
-  background-color: rgba(128,203,196,0.251);
+  background-color: rgba(113,124,180,0.314);
 }
 #article-container figure.highlight table {
   display: block;
@@ -1626,16 +1626,16 @@ blockquote footer cite:before {
 #article-container figure.highlight figcaption a {
   float: right;
   padding-right: 10px;
-  color: #90a4ae;
+  color: #a6accd;
 }
 #article-container figure.highlight figcaption a:hover {
-  border-bottom-color: #90a4ae;
+  border-bottom-color: #a6accd;
 }
 #article-container figure.highlight .gutter pre {
   padding-right: 0.5rem;
   padding-left: 0.5rem;
-  background-color: #f6f8fa;
-  color: rgba(144,164,174,0.5);
+  background-color: #292d3e;
+  color: rgba(166,172,205,0.5);
   text-align: right;
 }
 #article-container figure.highlight .code pre {
@@ -1651,8 +1651,8 @@ blockquote footer cite:before {
   overflow: hidden;
   width: 100%;
   height: 1.5rem;
-  background: #e6ebf1;
-  color: #90a4ae;
+  background: #252938;
+  color: #a6accd;
   font-size: 14px;
 }
 #article-container figure.highlight .highlight-tools .code-expand {
