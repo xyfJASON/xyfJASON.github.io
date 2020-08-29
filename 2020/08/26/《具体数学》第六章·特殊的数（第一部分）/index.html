@@ -1,0 +1,733 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>《具体数学》第六章·特殊的数（第一部分） | xyfJASON</title><meta name="description" content="第六章·特殊的数分7节，包括斯特林数、欧拉数、调和数、调和求和法、伯努利数、斐波那契数和连项式的内容。这是笔记第一部分，包括斯特林数、欧拉数，它们可以构成类似杨辉三角的三角形。"><meta name="keywords" content="学习笔记"><meta name="author" content="xyfJASON"><meta name="copyright" content="xyfJASON"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/myimg/myfavicon.png"><link rel="canonical" href="https://xyfjason.github.io/2020/08/26/%E3%80%8A%E5%85%B7%E4%BD%93%E6%95%B0%E5%AD%A6%E3%80%8B%E7%AC%AC%E5%85%AD%E7%AB%A0%C2%B7%E7%89%B9%E6%AE%8A%E7%9A%84%E6%95%B0%EF%BC%88%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%EF%BC%89/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta property="og:type" content="article"><meta property="og:title" content="《具体数学》第六章·特殊的数（第一部分）"><meta property="og:url" content="https://xyfjason.github.io/2020/08/26/%E3%80%8A%E5%85%B7%E4%BD%93%E6%95%B0%E5%AD%A6%E3%80%8B%E7%AC%AC%E5%85%AD%E7%AB%A0%C2%B7%E7%89%B9%E6%AE%8A%E7%9A%84%E6%95%B0%EF%BC%88%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%EF%BC%89/"><meta property="og:site_name" content="xyfJASON"><meta property="og:description" content="第六章·特殊的数分7节，包括斯特林数、欧拉数、调和数、调和求和法、伯努利数、斐波那契数和连项式的内容。这是笔记第一部分，包括斯特林数、欧拉数，它们可以构成类似杨辉三角的三角形。"><meta property="og:image" content="https://xyfjason.github.io/gallery/pexels_study1.jpg"><meta property="article:published_time" content="2020-08-26T10:30:01.000Z"><meta property="article:modified_time" content="2020-08-28T08:13:46.153Z"><meta name="twitter:card" content="summary"><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#fff')
+  }
+}
+
+var getCookies = function (name) {
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) return parts.pop().split(';').shift()
+}
+
+var autoChangeMode = 'false'
+var t = getCookies('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (Cookies.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="next" title="《具体数学》第五章·二项式系数（第二部分）" href="https://xyfjason.github.io/2020/08/23/%E3%80%8A%E5%85%B7%E4%BD%93%E6%95%B0%E5%AD%A6%E3%80%8B%E7%AC%AC%E4%BA%94%E7%AB%A0%C2%B7%E4%BA%8C%E9%A1%B9%E5%BC%8F%E7%B3%BB%E6%95%B0%EF%BC%88%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%EF%BC%89/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容:${query}"}},
+  translate: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  runtime: false,
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  highlightCopy: true,
+  highlightLang: true,
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isanchor: false    
+}</script><script>var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isSidebar: true
+  }</script><noscript><style>
+#nav {
+  opacity: 1
+}
+.justified-gallery img{
+  opacity: 1
+}
+</style></noscript><meta name="generator" content="Hexo 4.2.1"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/myimg/myavatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">103</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">11</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">44</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down menus-expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/categories/%E9%9A%8F%E7%AC%94/"><i class="fa-fw fas fa-align-center"></i><span> 随笔</span></a></li><li><a class="site-page" href="/categories/%E9%A1%B9%E7%9B%AE/"><i class="fa-fw fas fa-graduation-cap"></i><span> 项目</span></a></li><li><a class="site-page" href="/categories/%E3%80%8A%E5%85%B7%E4%BD%93%E6%95%B0%E5%AD%A6%E3%80%8B/"><i class="fa-fw fas fa-book"></i><span> 《具体数学》</span></a></li><li><a class="site-page" href="/categories/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/"><i class="fa-fw fas fa-file"></i><span> 文献</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/website/"><i class="fa-fw fas fa-magic"></i><span> 网站收藏</span></a></div></div></div></div><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#斯特林数-Stirling-Numbers"><span class="toc-number">1.</span> <span class="toc-text">斯特林数 Stirling Numbers</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#第二类斯特林数"><span class="toc-number">1.1.</span> <span class="toc-text">第二类斯特林数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第一类斯特林数"><span class="toc-number">1.2.</span> <span class="toc-text">第一类斯特林数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一些恒等式"><span class="toc-number">1.3.</span> <span class="toc-text">一些恒等式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#欧拉数-Eulerian-Numbers"><span class="toc-number">2.</span> <span class="toc-text">欧拉数 Eulerian Numbers</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#定义和递归式"><span class="toc-number">2.1.</span> <span class="toc-text">定义和递归式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#性质和恒等式"><span class="toc-number">2.2.</span> <span class="toc-text">性质和恒等式</span></a></li></ol></li></ol></div></div></div><div class="code-close" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/gallery/pexels_study1.jpg)"><nav id="nav"><span class="pull-left" id="blog_name"><a class="blog_title" id="site-name" href="/">xyfJASON</a></span><span class="pull-right menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down menus-expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/categories/%E9%9A%8F%E7%AC%94/"><i class="fa-fw fas fa-align-center"></i><span> 随笔</span></a></li><li><a class="site-page" href="/categories/%E9%A1%B9%E7%9B%AE/"><i class="fa-fw fas fa-graduation-cap"></i><span> 项目</span></a></li><li><a class="site-page" href="/categories/%E3%80%8A%E5%85%B7%E4%BD%93%E6%95%B0%E5%AD%A6%E3%80%8B/"><i class="fa-fw fas fa-book"></i><span> 《具体数学》</span></a></li><li><a class="site-page" href="/categories/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/"><i class="fa-fw fas fa-file"></i><span> 文献</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/website/"><i class="fa-fw fas fa-magic"></i><span> 网站收藏</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">《具体数学》第六章·特殊的数（第一部分）</div></div><div id="post-meta"><div class="meta-firstline"><time class="post-meta__date"><span class="post-meta__date-created" title="发表于 2020-08-26 18:30:01"><i class="far fa-calendar-alt fa-fw"></i> 发表于 2020-08-26</span><span class="post-meta__separator">|</span><span class="post-meta__date-updated" title="更新于 2020-08-28 16:13:46"><i class="fas fa-history fa-fw"></i> 更新于 2020-08-28</span></time><span class="post-meta__categories"><span class="post-meta__separator">|</span><i class="fas fa-inbox fa-fw post-meta__icon"></i><a class="post-meta__categories" href="/categories/Contests/">Contests</a><i class="fas fa-angle-right post-meta__separator"></i><i class="fas fa-inbox fa-fw post-meta__icon"></i><a class="post-meta__categories" href="/categories/Contests/%E3%80%8A%E5%85%B7%E4%BD%93%E6%95%B0%E5%AD%A6%E3%80%8B/">《具体数学》</a></span></div><div class="meta-secondline"> <span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta__icon"></i><span>字数总计:</span><span class="word-count">2.6k</span><span class="post-meta__separator">|</span><i class="far fa-clock fa-fw post-meta__icon"></i><span>阅读时长: 12 分钟</span></span></div><div class="meta-thirdline"><span class="post-meta-pv-cv"><span class="post-meta__separator">|</span><i class="far fa-eye fa-fw post-meta__icon"></i><span>阅读量:</span><span id="busuanzi_value_page_pv"></span></span><span class="post-meta-commentcount"></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><blockquote>
+<p>第六章·特殊的数分7节，包括斯特林数、欧拉数、调和数、调和求和法、伯努利数、斐波那契数和连项式的内容。这是笔记第一部分，包括斯特林数、欧拉数，它们可以构成类似杨辉三角的三角形。</p>
+</blockquote>
+<script type="math/tex; mode=display">
+\newcommand{\stra}[2]{\begin{bmatrix}#1\\#2\end{bmatrix}}
+\newcommand{\strb}[2]{\begin{Bmatrix}#1\\#2\end{Bmatrix}}
+\newcommand{\elr}[2]{\left\langle\begin{matrix}#1\\#2\end{matrix}\right\rangle}
+\newcommand{\elrdb}[2]{\left\langle\left\langle\begin{matrix}#1\\#2\end{matrix}\right\rangle\right\rangle}</script><h1 id="斯特林数-Stirling-Numbers"><a href="#斯特林数-Stirling-Numbers" class="headerlink" title="斯特林数 Stirling Numbers"></a>斯特林数 Stirling Numbers</h1><p>符号表示：</p>
+<p><strong>第一类斯特林数（斯特林轮换数）</strong>：$\stra{n}{k}$；</p>
+<p><strong>第二类斯特林数（斯特林子集数）</strong>：$\strb{n}{k}$. </p>
+<blockquote>
+<p>注：自定义 $\LaTeX$ 运算符号，以上述两个斯特林数为例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">\newcommand&#123;\stra&#125;[2]&#123;\begin&#123;bmatrix&#125;#1\\#2\end&#123;bmatrix&#125;&#125;</span><br><span class="line">\newcommand&#123;\strb&#125;[2]&#123;\begin&#123;Bmatrix&#125;#1\\#2\end&#123;Bmatrix&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p><code>\newcommand{运算符}[参数数量]{运算符长什么样}</code>，其中 <code>#1</code>,<code>#2</code> 标注参数位置。</p>
+</blockquote>
+<h2 id="第二类斯特林数"><a href="#第二类斯特林数" class="headerlink" title="第二类斯特林数"></a>第二类斯特林数</h2><p>我们先来考虑第二类斯特林数。$\strb{n}{k}$ 表示将一个有 $n$ 件物品的集合划分成 $k$ 个非空子集的方案数。</p>
+<blockquote>
+<p>花括号也用来表示集合，这一雷同有助于让我们记住 $\strb{n}{k}$ 的意义。</p>
+</blockquote>
+<p>我们可以推导 $\strb{n}{k}$ 的递归式：把 $n$ 件物品分成 $k$ 个部分，要么是最后一件物品单独一类，这一共有 $\strb{n-1}{k-1}$ 种方案；要么是最后一件物品加入前 $n-1$ 件物品划分出的 $k$ 个部分之一去，共有 $k\strb{n-1}{k}$ 种方案。所以我们有：</p>
+<script type="math/tex; mode=display">
+\color{purple}{\strb{n}{k}=k\strb{n-1}{k}+\strb{n-1}{k-1}}</script><p>（如果系数 $k$ 是 $1$ 就是二项式系数了）</p>
+<p>基于此，我们可以生成第二类斯特林数的三角形：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$n$</th>
+<th style="text-align:center">$\strb{n}{0}$</th>
+<th style="text-align:center">$\strb{n}{1}$</th>
+<th style="text-align:center">$\strb{n}{2}$</th>
+<th style="text-align:center">$\strb{n}{3}$</th>
+<th style="text-align:center">$\strb{n}{4}$</th>
+<th style="text-align:center">$\strb{n}{5}$</th>
+<th style="text-align:center">$\strb{n}{6}$</th>
+<th style="text-align:center">$\strb{n}{7}$</th>
+<th style="text-align:center">$\strb{n}{8}$</th>
+<th style="text-align:center">$\strb{n}{9}$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$2$</td>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$3$</td>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$3$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$4$</td>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$7$</td>
+<td style="text-align:center">$6$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$5$</td>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$15$</td>
+<td style="text-align:center">$25$</td>
+<td style="text-align:center">$10$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$6$</td>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$31$</td>
+<td style="text-align:center">$90$</td>
+<td style="text-align:center">$65$</td>
+<td style="text-align:center">$15$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$7$</td>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$63$</td>
+<td style="text-align:center">$301$</td>
+<td style="text-align:center">$350$</td>
+<td style="text-align:center">$140$</td>
+<td style="text-align:center">$21$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$8$</td>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$127$</td>
+<td style="text-align:center">$966$</td>
+<td style="text-align:center">$1701$</td>
+<td style="text-align:center">$1050$</td>
+<td style="text-align:center">$266$</td>
+<td style="text-align:center">$28$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$9$</td>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$255$</td>
+<td style="text-align:center">$3025$</td>
+<td style="text-align:center">$7770$</td>
+<td style="text-align:center">$6951$</td>
+<td style="text-align:center">$2646$</td>
+<td style="text-align:center">$462$</td>
+<td style="text-align:center">$36$</td>
+<td style="text-align:center">$1$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="第一类斯特林数"><a href="#第一类斯特林数" class="headerlink" title="第一类斯特林数"></a>第一类斯特林数</h2><p>现在讨论第一类斯特林数。$\stra{n}{k}$ 表示将 $n$ 个元素排成 $k$ 个<strong>轮换</strong>的方案数。这里，<strong>轮换</strong>是指环形排列，可以转动而相等，例如 $[A,B,C,D]=[B,C,D,A]=[C,D,A,B]=[D,A,B,C]$，但是 $[A,B,C,D]\neq[A,B,D,C]$. </p>
+<p>先看几个特殊的值，$n$ 个元素的 $n$ 轮换有 $\frac{n!}{n}$ 种，所以 $\stra{n}{1}=(n-1)!$；当所有轮换都是单元素或者双元素时，轮换和子集没有差别，所以 $\stra{n}{n}=\strb{n}{n}=1,\,\stra{n}{n-1}=\strb{n}{n-1}=\binom{n}{2}$. </p>
+<p>我们也可以推导 $\stra{n}{k}$ 的递归式：考虑最后一件物品，要么单独放在自己的轮换里，有 $\stra{n-1}{k-1}$ 种方式；要么加入前 $n-1$ 件物品分成的 $\stra{n-1}{k}$ 个轮换中的一个，而方法有 $n-1$ 种（插入任何一个轮换的任何一个位置都行）。所以我们有：</p>
+<script type="math/tex; mode=display">
+\color{purple}{\stra{n}{k}=(n-1)\stra{n-1}{k}+\stra{n-1}{k-1}}</script><blockquote>
+<p>记忆是很方便的，第一类斯特林数是在二项式系数的递归式中乘上了<strong>上指标</strong> $n-1$ 作为系数，第二类斯特林数是乘上了<strong>下指标</strong> $k$ 作为系数。</p>
+</blockquote>
+<p>基于此，我们也可以生成第一类斯特林数的三角形：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$n$</th>
+<th style="text-align:center">$\stra{n}{0}$</th>
+<th style="text-align:center">$\stra{n}{1}$</th>
+<th style="text-align:center">$\stra{n}{2}$</th>
+<th style="text-align:center">$\stra{n}{3}$</th>
+<th style="text-align:center">$\stra{n}{4}$</th>
+<th style="text-align:center">$\stra{n}{5}$</th>
+<th style="text-align:center">$\stra{n}{6}$</th>
+<th style="text-align:center">$\stra{n}{7}$</th>
+<th style="text-align:center">$\stra{n}{8}$</th>
+<th style="text-align:center">$\stra{n}{9}$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$2$</td>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$3$</td>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center">$2$</td>
+<td style="text-align:center">$3$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$4$</td>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center">$6$</td>
+<td style="text-align:center">$11$</td>
+<td style="text-align:center">$6$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$5$</td>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center">$24$</td>
+<td style="text-align:center">$50$</td>
+<td style="text-align:center">$35$</td>
+<td style="text-align:center">$10$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$6$</td>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center">$120$</td>
+<td style="text-align:center">$274$</td>
+<td style="text-align:center">$225$</td>
+<td style="text-align:center">$85$</td>
+<td style="text-align:center">$15$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$7$</td>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center">$720$</td>
+<td style="text-align:center">$1764$</td>
+<td style="text-align:center">$1624$</td>
+<td style="text-align:center">$735$</td>
+<td style="text-align:center">$175$</td>
+<td style="text-align:center">$21$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$8$</td>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center">$5040$</td>
+<td style="text-align:center">$13068$</td>
+<td style="text-align:center">$13132$</td>
+<td style="text-align:center">$6769$</td>
+<td style="text-align:center">$1960$</td>
+<td style="text-align:center">$322$</td>
+<td style="text-align:center">$28$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$9$</td>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center">$40320$</td>
+<td style="text-align:center">$\small{109584}$</td>
+<td style="text-align:center">$\small{118124}$</td>
+<td style="text-align:center">$67284$</td>
+<td style="text-align:center">$22449$</td>
+<td style="text-align:center">$4536$</td>
+<td style="text-align:center">$546$</td>
+<td style="text-align:center">$36$</td>
+<td style="text-align:center">$1$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="一些恒等式"><a href="#一些恒等式" class="headerlink" title="一些恒等式"></a>一些恒等式</h2><p>我们知道，每一种排列都和一个轮换等价——例如 $15234$，从下标向数值连边，就构成了若干个环 $[1][2543]$，也即形成了一个轮换（这一点在竞赛中也经常使用）。所以，所有轮换方案加起来就是所有排列数，即：</p>
+<script type="math/tex; mode=display">
+\color{blue}{\sum_{k=0}^n\stra{n}{k}=n!\quad,整数\;n\geqslant 0}</script><p>之前说过，普通的幂次和下降幂之间可以通过斯特林数建立起联系，我们观察前几个关系：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+&x^0=x^{\underline 0}\\
+&x^1=x^{\underline 1}\\
+&x^2=x^{\underline 2}+x^{\underline 1}\\
+&x^3=x^{\underline 3}+3x^{\underline 2}+x^{\underline 1}\\
+&x^4=x^{\underline 4}+6x^{\underline 3}+7x^{\underline 2}+x^{\underline 1}
+\end{align}</script><p>会发现这系数不就是第二类斯特林数吗？也就是说，我们可以猜想：</p>
+<script type="math/tex; mode=display">
+\color{blue}{x^n=\sum_k\strb{n}{k}x^{\underline k}}</script><p>数学归纳法证明：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+x^n=x\cdot x^{n-1}&=x\sum_k\strb{n-1}{k}x^{\underline k}\\
+&=\sum_k\strb{n-1}{k}x^{\underline {k+1}}+\sum_k\strb{n-1}{k}kx^{\underline k}&&x\cdot x^{\underline k}=x^{\underline{k+1}}+kx^{\underline k}\\
+&=\sum_k\left(\strb{n-1}{k-1}+k\strb{n-1}{k}\right)x^{\underline k}\\
+&=\sum_k\strb{n}{k}x^{\underline k}
+\end{align}</script><p>证毕。</p>
+<p>同样的，上升阶乘幂与普通的幂次之间也有类似关系：</p>
+<script type="math/tex; mode=display">
+\color{blue}{x^{\overline n}=\sum_k\stra{n}{k}x^k}</script><p>数学归纳法证明：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+x^{\overline n}=(x+n-1)x^{\overline {n-1}}&=(x+n-1)\sum_k\stra{n-1}{k}x^k\\
+&=\sum_k\stra{n-1}{k}x^{k+1}+\sum_k\stra{n-1}{k}(n-1)x^k&&(x+n-1)x^k=x^{k+1}+(n-1)x^k\\
+&=\sum_k\left(\stra{n-1}{k-1}+(n-1)\stra{n-1}{k}\right)x^k\\
+&=\sum_k\stra{n}{k}x^k
+\end{align}</script><p>证毕。</p>
+<p>上面是用下降幂表示了普通幂，普通幂表示了上升幂。但如果我们想用普通幂表示下降幂，上升幂表示普通幂呢？只需要应用 $x^{\underline n}=(-1)^n(-x)^{\overline n}$，把 $x$ 取相反值就得到：</p>
+<script type="math/tex; mode=display">
+\color{blue}{\begin{align}
+&x^{n}=\sum_k\strb{n}{k}(-1)^{n-k}x^{\overline k}\\
+&x^{\underline n}=\sum_k\stra{n}{k}(-1)^{n-k}x^k
+\end{align}}</script><p>如果我们把普通幂表示上升幂的式子代入上升幂表示普通幂的式子，那么得到：</p>
+<script type="math/tex; mode=display">
+x^n=\sum_k\strb{n}{k}(-1)^{n-k}\sum_m\stra{k}{m}x^m=\sum_{k,m}(-1)^{n-k}\strb{n}{k}\stra{k}{m}x^m</script><p>由于这是一个恒等式，所以 $x$ 对应系数相等，于是我们得到：</p>
+<script type="math/tex; mode=display">
+\color{blue}{\sum_{k,m}(-1)^{n-k}\strb{n}{k}\stra{k}{m}=[m=n]}</script><p><br></p>
+<p>更多的实践总结出了一大堆斯特林数恒等式：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+&\stra{n}{k}=(n-1)\stra{n-1}{k}+\stra{n-1}{k-1}&&递归式\\
+&\strb{n}{k}=k\strb{n-1}{k}+\strb{n-1}{k-1}&&递归式\\
+&x^{n}=\sum_k\strb{n}{k}x^{\underline k}=\sum_k\strb{n}{k}(-1)^{n-k}x^{\overline k}&&在幂之间转换\\
+&x^{\overline n}=\sum_k\stra{n}{k}x^k&&在幂之间转换\\
+&x^{\underline n}=\sum_k\stra{n}{k}(-1)^{n-k}x^k&&在幂之间转换\\
+&\sum_k\stra{n}{k}\strb{k}{m}(-1)^{n-k}=[m=n]&&反转公式\\
+&\sum_{k,m}\strb{n}{k}\stra{k}{m}(-1)^{n-k}=[m=n]&&反转公式\\
+&\stra{n}{k}=\strb{-k}{-n}&&对偶性\\
+\\
+&\strb{n+1}{m+1}=\sum_k\binom{n}{k}\strb{k}{m}\\
+&\stra{n+1}{m+1}=\sum_k\stra{n}{k}\binom{k}{m}\\
+&\strb{n}{m}=\sum_k\binom{n}{k}\strb{k+1}{m+1}(-1)^{n-k}\\
+&\stra{n}{m}=\sum_k\stra{n+1}{k+1}\binom{k}{m}(-1)^{m-k}\\
+&m!\strb{n}{m}=\sum_k\binom{m}{k}k^n(-1)^{m-k}\\
+&\strb{n+1}{m+1}=\sum_{k=0}^{n}\strb{k}{m}(m+1)^{n-k}\\
+&\stra{n+1}{m+1}=\sum_{k=0}^n\stra{k}{m}n^{\underline{n-k}}=n!\sum_{k=0}^n\stra{k}{m}/k!\\
+&\strb{m+n+1}{m}=\sum_{k=0}^mk\strb{n+k}{k}\\
+&\stra{m+n+1}{m}=\sum_{k=0}^m(n+k)\stra{n+k}{k}\\
+&\binom{n}{m}=\sum_k\strb{n+1}{k+1}\stra{k}{m}(-1)^{m-k}\\
+&n^{\underline{n-m}}[n\geqslant m]=\sum_k\stra{n+1}{k+1}\strb{k}{m}(-1)^{m-k}\\
+&\strb{n}{n-m}=\sum_k\binom{m-n}{m+k}\binom{m+n}{n+k}\stra{m+k}{k}\\
+&\stra{n}{n-m}=\sum_k\binom{m-n}{m+k}\binom{m+n}{n+k}\strb{m+k}{k}\\
+&\strb{n}{l+m}\binom{l+m}{l}=\sum_k\binom{k}{l}\strb{n-k}{m}\binom{n}{k}\\
+&\stra{n}{l+m}\binom{l+m}{l}=\sum_k\stra{k}{l}\stra{n-k}{m}\binom{n}{k}
+\end{align}</script><hr>
+<h1 id="欧拉数-Eulerian-Numbers"><a href="#欧拉数-Eulerian-Numbers" class="headerlink" title="欧拉数 Eulerian Numbers"></a>欧拉数 Eulerian Numbers</h1><h2 id="定义和递归式"><a href="#定义和递归式" class="headerlink" title="定义和递归式"></a>定义和递归式</h2><p>$\elr{n}{k}$ 表示 $\{1,2,\cdots,n\}$ 的有 $k$ 个<strong>升高</strong>的排列 $\pi_1\pi_2\cdots\pi_n$ 的个数。也即，有 $k$ 个地方 $\pi_j&lt;\pi_{j+1}$. </p>
+<p>推导欧拉数的递归式：尝试插入数 $n$，如果它插在某个上升段的最后，那么升高数 $+1$，这样的位置有 $n-k$ 个；如果它插在某个上升段的中间，升高数不变，这样的位置有 $k+1$ 个。所以我们有：</p>
+<script type="math/tex; mode=display">
+\color{purple}{\elr{n}{k}=(k+1)\elr{n-1}{k}+(n-k)\elr{n-1}{k-1}}</script><p>初始条件：$\elr{0}{k}=[k=0]$，并假定 $k&lt;0$ 时 $\elr{n}{k}=0$. </p>
+<p>由此我们可以得到欧拉数的三角形：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$n$</th>
+<th style="text-align:center">$\elr{n}{0}$</th>
+<th style="text-align:center">$\elr{n}{1}$</th>
+<th style="text-align:center">$\elr{n}{2}$</th>
+<th style="text-align:center">$\elr{n}{3}$</th>
+<th style="text-align:center">$\elr{n}{4}$</th>
+<th style="text-align:center">$\elr{n}{5}$</th>
+<th style="text-align:center">$\elr{n}{6}$</th>
+<th style="text-align:center">$\elr{n}{7}$</th>
+<th style="text-align:center">$\elr{n}{8}$</th>
+<th style="text-align:center">$\elr{n}{9}$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$2$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$3$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$4$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$4$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$11$</td>
+<td style="text-align:center">$11$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$5$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$26$</td>
+<td style="text-align:center">$66$</td>
+<td style="text-align:center">$26$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$6$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$57$</td>
+<td style="text-align:center">$302$</td>
+<td style="text-align:center">$302$</td>
+<td style="text-align:center">$57$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$7$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$120$</td>
+<td style="text-align:center">$1191$</td>
+<td style="text-align:center">$2416$</td>
+<td style="text-align:center">$1191$</td>
+<td style="text-align:center">$120$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$8$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$247$</td>
+<td style="text-align:center">$4293$</td>
+<td style="text-align:center">$15619$</td>
+<td style="text-align:center">$15619$</td>
+<td style="text-align:center">$4293$</td>
+<td style="text-align:center">$247$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$0$</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$9$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$502$</td>
+<td style="text-align:center">$14608$</td>
+<td style="text-align:center">$88234$</td>
+<td style="text-align:center">$\small{156190}$</td>
+<td style="text-align:center">$88234$</td>
+<td style="text-align:center">$14608$</td>
+<td style="text-align:center">$502$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$0$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="性质和恒等式"><a href="#性质和恒等式" class="headerlink" title="性质和恒等式"></a>性质和恒等式</h2><p>从表中可以看出，欧拉数具有对称性：</p>
+<script type="math/tex; mode=display">
+\color{blue}{\elr{n}{k}=\elr{n}{n-1-k}}</script><p>因为 $\pi_1\cdots\pi_n$ 有 $k$ 个升高当且仅当 $\pi_n\cdots\pi_1$ 有 $n-1-k$ 个升高。</p>
+<p>$\textbf{Worpitzky}$ 恒等式：</p>
+<script type="math/tex; mode=display">
+\color{blue}{x^n=\sum_k\elr{n}{k}\binom{x+k}{n}}</script><p>证明：数学归纳法。首先 $n=0$ 时，$1=\sum\limits_k\langle\begin{smallmatrix}0\\k\end{smallmatrix}\rangle\binom{x+k}{0}=1$ 成立；假设 $\leqslant n$ 均成立，则：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+x^{n+1}&=x\cdot x^n\\
+&=x\sum\limits _k\elr{n}{k}\binom{x+k}{n}\\
+&=\sum_k\elr{n}{k}\left[(k+1)\binom{x+k}{n+1}+(n-k)\binom{x+k+1}{n+1}\right]\\
+&=\sum_k\left(\elr{n+1}{k}-(n+1-k)\elr{n}{k-1}\right)\binom{x+k}{n+1}+\sum_k\elr{n}{k}(n-k)\binom{x+k+1}{n+1}\\
+&=\sum_k\elr{n+1}{k}\binom{x+k}{n+1}+\sum_k\elr{n}{k}(n-k)\binom{x+k+1}{n+1}-\sum_k(n+1-k)\elr{n}{k-1}\binom{x+k}{n+1}\\
+&=\sum_k\elr{n+1}{k}\binom{x+k}{n+1}
+\end{align}</script><p>证毕。（注：上述推导用了恒等式：$x\binom{x+k}{n}=(k+1)\binom{x+k}{n+1}+(n-k)\binom{x+k+1}{n+1}$. ）</p>
+<p>还有一些其他性质：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+&\elr{n}{m}=\sum_{k=0}^m\binom{n+1}{k}(m+1-k)^n(-1)^k\\
+&m!\strb{n}{m}=\sum_k\elr{n}{k}\binom{k}{n-m}\\
+&\elr{n}{m}=\sum_k\strb{n}{k}\binom{n-k}{m}(-1)^{n-k-m}k!
+\end{align}</script><p>（二阶欧拉数和斯特林多项式目前跳过）</p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">xyfJASON</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://xyfjason.github.io/2020/08/26/%E3%80%8A%E5%85%B7%E4%BD%93%E6%95%B0%E5%AD%A6%E3%80%8B%E7%AC%AC%E5%85%AD%E7%AB%A0%C2%B7%E7%89%B9%E6%AE%8A%E7%9A%84%E6%95%B0%EF%BC%88%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%EF%BC%89/">https://xyfjason.github.io/2020/08/26/%E3%80%8A%E5%85%B7%E4%BD%93%E6%95%B0%E5%AD%A6%E3%80%8B%E7%AC%AC%E5%85%AD%E7%AB%A0%C2%B7%E7%89%B9%E6%AE%8A%E7%9A%84%E6%95%B0%EF%BC%88%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%EF%BC%89/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://xyfjason.github.io" target="_blank">xyfJASON</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></div><div class="post_share"><div class="social-share" data-image="/gallery/pexels_study1.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"/><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js"></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2020/08/23/%E3%80%8A%E5%85%B7%E4%BD%93%E6%95%B0%E5%AD%A6%E3%80%8B%E7%AC%AC%E4%BA%94%E7%AB%A0%C2%B7%E4%BA%8C%E9%A1%B9%E5%BC%8F%E7%B3%BB%E6%95%B0%EF%BC%88%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%EF%BC%89/"><img class="next-cover" data-src="/gallery/pexels_study1.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">《具体数学》第五章·二项式系数（第二部分）</div></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2020/02/19/CDQ分治学习笔记/" title="CDQ分治学习笔记"><img class="relatedPosts_cover" data-src="/gallery/pexels_snowflake.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-02-19</div><div class="relatedPosts_title">CDQ分治学习笔记</div></div></a></div><div class="relatedPosts_item"><a href="/2020/08/06/Golomb - 1976 - The “Sales Tax” Theorem/" title="Golomb - 1976 - The “Sales Tax” Theorem"><img class="relatedPosts_cover" data-src="/gallery/pexels_library.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-06</div><div class="relatedPosts_title">Golomb - 1976 - The “Sales Tax” Theorem</div></div></a></div><div class="relatedPosts_item"><a href="/2020/04/18/DSU-on-tree-学习笔记/" title="DSU on tree 学习笔记"><img class="relatedPosts_cover" data-src="/gallery/pexels_tree-snow.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-04-18</div><div class="relatedPosts_title">DSU on tree 学习笔记</div></div></a></div><div class="relatedPosts_item"><a href="/2020/07/29/《具体数学》第一章·递归问题/" title="《具体数学》第一章·递归问题"><img class="relatedPosts_cover" data-src="/gallery/pexels_study1.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-07-29</div><div class="relatedPosts_title">《具体数学》第一章·递归问题</div></div></a></div><div class="relatedPosts_item"><a href="/2020/07/31/《具体数学》第二章·和式（第一部分）/" title="《具体数学》第二章·和式（第一部分）"><img class="relatedPosts_cover" data-src="/gallery/pexels_study1.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-07-31</div><div class="relatedPosts_title">《具体数学》第二章·和式（第一部分）</div></div></a></div><div class="relatedPosts_item"><a href="/2020/08/01/《具体数学》第二章·和式（第二部分）/" title="《具体数学》第二章·和式（第二部分）"><img class="relatedPosts_cover" data-src="/gallery/pexels_study1.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-01</div><div class="relatedPosts_title">《具体数学》第二章·和式（第二部分）</div></div></a></div></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div class="vcomment" id="vcomment"></div><script src="https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script><script>var requestSetting = function (from,set) {
+  var from = from
+  var setting = set.split(',').filter(function(item){
+  return from.indexOf(item) > -1
+  });
+  setting = setting.length == 0 ? from :setting;
+  return setting
+}
+
+var guestInfo = requestSetting(['nick','mail','link'],'nick,mail,link')
+var requiredFields = requestSetting(['nick','mail'],'nick,mail')
+
+window.valine = new Valine({
+  el:'#vcomment',
+  appId: 'ovQ7Ukrh29Ex4n5TKqN19d5D-MdYXbMMI',
+  appKey: 'bGKUwhryO4w9EE9TcpEaOKGF',
+  placeholder: 'Please leave your footprints',
+  avatar: 'monsterid',
+  meta: guestInfo,
+  pageSize: '10',
+  lang: 'zh-CN',
+  recordIP: false,
+  serverURLs: '',
+  emojiCDN: '',
+  emojiMaps: "",
+  enableQQ: false,
+  requiredFields: requiredFields
+});</script></div></article></main><footer id="footer" style="background-image: url(/gallery/pexels_study1.jpg)" data-type="photo"><div id="footer-wrap"><div class="copyright">&copy;2020 By xyfJASON</div><div class="framework-info"><span>驱动 </span><a href="https://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><button id="readmode" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font_plus" title="放大字体"><i class="fas fa-plus"></i></button><button id="font_minus" title="缩小字体"><i class="fas fa-minus"></i></button><button id="darkmode" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" title="设置"><i class="fas fa-cog"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fas fa-comments"></i></a><button class="close" id="mobile-toc-button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a href="https://github.com/wzpan/hexo-generator-search" target="_blank" rel="noopener" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div class="search-mask"></div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  CommonHTML: {
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "HTML-CSS": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "SVG": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  }
+});
+</script><script type="text/x-mathjax-config">MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for (i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script defer id="ribbon" src="/js/third-party/canvas-ribbon.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><script src="/js/search/local-search.js"></script><script>if (document.getElementsByClassName('mermaid').length) {
+  loadScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js',function () {
+    mermaid.initialize({
+      theme: 'default',
+  })
+})
+}</script></body></html>
