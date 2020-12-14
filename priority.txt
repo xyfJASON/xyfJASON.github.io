@@ -9,6 +9,7 @@ priority:
 
 170 - 树状数组倍增学习笔记
 
+161 - QTREE系列
 160 - DSU on tree 学习笔记
 
 150 - bitset学习笔记
