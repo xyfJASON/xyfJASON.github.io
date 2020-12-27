@@ -28,6 +28,7 @@ priority:
 101 - 关于扫描线算法中线段树标记的理解
 100 - 计算几何专题练习记录
 
+14 - Numpy常用操作
 13 - Python的csv模块
 12 - fastText 文本分类
 11 - “结巴”中文分词·Python
