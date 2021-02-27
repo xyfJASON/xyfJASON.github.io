@@ -1,0 +1,269 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>[CS231n]七·Neural Networks Part 3 | xyfJASON</title><meta name="description" content="Stanford CS231n Convolutional Neural Networks for Visual Recognition"><meta name="keywords" content="学习笔记"><meta name="author" content="xyfJASON"><meta name="copyright" content="xyfJASON"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/myimg/myfavicon.png"><link rel="canonical" href="https://xyfjason.github.io/2021/02/27/CS231n-%E4%B8%83%C2%B7Neural-Networks-Part-3/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta property="og:type" content="article"><meta property="og:title" content="[CS231n]七·Neural Networks Part 3"><meta property="og:url" content="https://xyfjason.github.io/2021/02/27/CS231n-%E4%B8%83%C2%B7Neural-Networks-Part-3/"><meta property="og:site_name" content="xyfJASON"><meta property="og:description" content="Stanford CS231n Convolutional Neural Networks for Visual Recognition"><meta property="og:image" content="https://xyfjason.github.io/gallery/pexels_woman-book.jpg"><meta property="article:published_time" content="2021-02-27T02:09:32.000Z"><meta property="article:modified_time" content="2021-02-27T15:57:39.016Z"><meta name="twitter:card" content="summary"><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#fff')
+  }
+}
+
+var getCookies = function (name) {
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) return parts.pop().split(';').shift()
+}
+
+var autoChangeMode = 'false'
+var t = getCookies('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (Cookies.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="next" title="[CS231n]六·Neural Networks Part 2" href="https://xyfjason.github.io/2021/02/25/CS231n-%E5%85%AD%C2%B7Neural-Networks-Part-2/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容:${query}"}},
+  translate: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  runtime: false,
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  highlightCopy: true,
+  highlightLang: true,
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isanchor: false    
+}</script><script>var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isSidebar: true
+  }</script><noscript><style>
+#nav {
+  opacity: 1
+}
+.justified-gallery img{
+  opacity: 1
+}
+</style></noscript><meta name="generator" content="Hexo 4.2.1"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/myimg/myavatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">135</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">12</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">21</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down menus-expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/categories/%E9%9A%8F%E7%AC%94/"><i class="fa-fw fas fa-align-center"></i><span> 随笔</span></a></li><li><a class="site-page" href="/categories/%E9%A1%B9%E7%9B%AE/"><i class="fa-fw fas fa-graduation-cap"></i><span> 项目</span></a></li><li><a class="site-page" href="/categories/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/"><i class="fa-fw fas fa-file"></i><span> 文献</span></a></li><li><a class="site-page" href="/categories/%E3%80%8A%E5%85%B7%E4%BD%93%E6%95%B0%E5%AD%A6%E3%80%8B/"><i class="fa-fw fas fa-book"></i><span> 具体数学</span></a></li><li><a class="site-page" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fas fa-desktop"></i><span> 机器学习</span></a></li><li><a class="site-page" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/"><i class="fa-fw fas fa-eye"></i><span> 计算机视觉</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/website/"><i class="fa-fw fas fa-magic"></i><span> 网站收藏</span></a></div></div></div></div><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Gradient-Checks"><span class="toc-number">1.</span> <span class="toc-text">Gradient Checks</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Sanity-Checks"><span class="toc-number">2.</span> <span class="toc-text">Sanity Checks</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Babysitting-the-learning-process"><span class="toc-number">3.</span> <span class="toc-text">Babysitting the learning process</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Parameter-updates"><span class="toc-number">4.</span> <span class="toc-text">Parameter updates</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SGD-and-bells-and-whistels"><span class="toc-number">4.1.</span> <span class="toc-text">SGD and bells and whistels</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Annealing-the-learning-rate"><span class="toc-number">4.2.</span> <span class="toc-text">Annealing the learning rate</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Second-order-methods"><span class="toc-number">4.3.</span> <span class="toc-text">Second order methods</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Per-parameter-adaptive-learning-rate-methods"><span class="toc-number">4.4.</span> <span class="toc-text">Per-parameter adaptive learning rate methods</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Hyperparameter-optimization"><span class="toc-number">5.</span> <span class="toc-text">Hyperparameter optimization</span></a></li></ol></div></div></div><div class="code-close" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/gallery/pexels_woman-book.jpg)"><nav id="nav"><span class="pull-left" id="blog_name"><a class="blog_title" id="site-name" href="/">xyfJASON</a></span><span class="pull-right menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down menus-expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/categories/%E9%9A%8F%E7%AC%94/"><i class="fa-fw fas fa-align-center"></i><span> 随笔</span></a></li><li><a class="site-page" href="/categories/%E9%A1%B9%E7%9B%AE/"><i class="fa-fw fas fa-graduation-cap"></i><span> 项目</span></a></li><li><a class="site-page" href="/categories/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/"><i class="fa-fw fas fa-file"></i><span> 文献</span></a></li><li><a class="site-page" href="/categories/%E3%80%8A%E5%85%B7%E4%BD%93%E6%95%B0%E5%AD%A6%E3%80%8B/"><i class="fa-fw fas fa-book"></i><span> 具体数学</span></a></li><li><a class="site-page" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fas fa-desktop"></i><span> 机器学习</span></a></li><li><a class="site-page" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/"><i class="fa-fw fas fa-eye"></i><span> 计算机视觉</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/website/"><i class="fa-fw fas fa-magic"></i><span> 网站收藏</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">[CS231n]七·Neural Networks Part 3</div></div><div id="post-meta"><div class="meta-firstline"><time class="post-meta__date"><span class="post-meta__date-created" title="发表于 2021-02-27 10:09:32"><i class="far fa-calendar-alt fa-fw"></i> 发表于 2021-02-27</span><span class="post-meta__separator">|</span><span class="post-meta__date-updated" title="更新于 2021-02-27 23:57:39"><i class="fas fa-history fa-fw"></i> 更新于 2021-02-27</span></time><span class="post-meta__categories"><span class="post-meta__separator">|</span><i class="fas fa-inbox fa-fw post-meta__icon"></i><a class="post-meta__categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">计算机视觉</a></span></div><div class="meta-secondline"> <span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta__icon"></i><span>字数总计:</span><span class="word-count">1.8k</span><span class="post-meta__separator">|</span><i class="far fa-clock fa-fw post-meta__icon"></i><span>阅读时长: 6 分钟</span></span></div><div class="meta-thirdline"><span class="post-meta-pv-cv"><span class="post-meta__separator">|</span><i class="far fa-eye fa-fw post-meta__icon"></i><span>阅读量:</span><span id="busuanzi_value_page_pv"></span></span><span class="post-meta-commentcount"></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><p><a href="https://cs231n.github.io/" target="_blank" rel="noopener">CS231n Convolutional Neural Networks for Visual Recognition</a></p>
+<p><a href="https://www.bilibili.com/video/BV1nJ411z7fe" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1nJ411z7fe</a></p>
+<a id="more"></a>
+<h1 id="Gradient-Checks"><a href="#Gradient-Checks" class="headerlink" title="Gradient Checks"></a>Gradient Checks</h1><p>神经网络反向传播过程很容易写出 bug，为了检验我们计算的梯度是否正确，可以将 analytic gradient 和 numerical gradient 进行比较。这里有一些实现的 tips：</p>
+<ul>
+<li><p>计算 numerical gradient 时，使用 centered formula，即：</p>
+<script type="math/tex; mode=display">
+\frac{\mathrm df(x)}{\mathrm dx}\approx\frac{f(x+h)-f(x-h)}{2h}</script><p>而非 $\frac{\mathrm df(x)}{\mathrm dx}\approx\frac{f(x+h)-f(x)}{h}$，这是因为前者误差为 $O(h^2)$，而后者有 $O(h)$. （泰勒展开即可证）</p>
+</li>
+<li><p>使用相对误差作为比较基准。如果使用绝对误差，比如 $10^{-4}$，那么在梯度本来就小于 $10^{-4}$ 的地方，这个阈值没有什么作用。因此，我们使用相对误差：</p>
+<script type="math/tex; mode=display">
+\frac{|f'_{\text{analytic}}-f'_\text{numerical}|}{\max\left(|f'_\text{analytic}|,|f'_\text{numerical}|\right)}</script><p>分母用 $\max$ 或者加和或者取任意一个都是可以的，但是要小心除零。</p>
+</li>
+<li><p>注意目标函数的不可导点。跨越了不可导点的 numerical gradient 可能和实际的 gradient 有较大差距，如果误差较大需要检查是不是这个原因。</p>
+</li>
+<li><p>只使用少量数据。解决上一条问题的一个方法是 gradient checks 时只用少量的数据，这样目标函数的不可导处将减少；同时只用检验 $2\sim3$ 处的梯度就够了。</p>
+</li>
+<li><p>$h$ 不宜设置得太小。理论上 $h$ 越小越精确，但由于计算机浮点数的精度误差，太小了可能反而不精确。</p>
+</li>
+<li><p>小心正则化项占了梯度的主要部分。如果正则化项在梯度中占比很大，它可能掩盖住了 back propagation 的错误。一个方式是在梯度检验时去掉正则化。</p>
+</li>
+<li><p>记住去掉 dropout/augmentations. 梯度检验时需要去除带有<strong>随机性质</strong>的量，比如 dropout 或者数据的随机 augmentation. 提前设置一个随机数种子也是可以的。</p>
+</li>
+</ul>
+<h1 id="Sanity-Checks"><a href="#Sanity-Checks" class="headerlink" title="Sanity Checks"></a>Sanity Checks</h1><p>在实施学习之前，可以先进行 sanity checks，以保证我们的代码是正确的。</p>
+<ul>
+<li>按概率推测损失函数初始值。例如一个十分类问题，随机初始化后我们应期望得到 $1/10$ 的正确率，也即负对数概率的 loss function 大致为：$-\ln(0.1)=2.302$. </li>
+<li>过拟合一个极小的数据集。用一个极小的数据集去训练，在去除正则化的情况下，我们应该期望得到 $100\%$ 的正确率或 loss function 为 $0$，即在这个极小的数据集上过拟合。</li>
+</ul>
+<h1 id="Babysitting-the-learning-process"><a href="#Babysitting-the-learning-process" class="headerlink" title="Babysitting the learning process"></a>Babysitting the learning process</h1><p>学习过程中我们可以监测一些值随着迭代次数的增加的变化。</p>
+<ul>
+<li><p><strong>Loss function</strong>. 作 loss function - epoch 图能直观的告诉我们学习的状况，帮助我们调整学习率等参数。</p>
+<p><img src= "/img/loading.gif" data-src="loss.jpeg" width="80%" height="80%" /></p>
+</li>
+<li><p><strong>Train/val accuracy</strong>. 作训练集和验证集上的准确率的图能直观的告诉我们是否过拟合/欠拟合，帮助我们调整正则化项。</p>
+<p><img src= "/img/loading.gif" data-src="train val accuracy.jpeg" width="80%" height="80%" /></p>
+</li>
+<li><p><strong>Ratio of weights: updates</strong>. 检测参数更新的幅度，帮助我们判断学习率是否合适，合适的幅度应该在 $10^{-3}$ 左右。</p>
+</li>
+<li><p><strong>First-layer Visualizations</strong>. 在图像处理的网络中，我们可以把第一层的神经元的参数还原成图像可视化。</p>
+<p><img src= "/img/loading.gif" data-src="first.jpeg" width="80%" height="80%" /></p>
+</li>
+</ul>
+<h1 id="Parameter-updates"><a href="#Parameter-updates" class="headerlink" title="Parameter updates"></a>Parameter updates</h1><h2 id="SGD-and-bells-and-whistels"><a href="#SGD-and-bells-and-whistels" class="headerlink" title="SGD and bells and whistels"></a>SGD and bells and whistels</h2><ul>
+<li><p><strong>Vanilla update</strong>. 朴素的随机梯度下降</p>
+</li>
+<li><p><strong>Momentum update</strong>. 朴素的 SGD 在每一处都向梯度下降的方向更新，就像一个人下山一样。而如果我们做另一个比喻，想象一个小球从山坡滚下，它在每一处将具有保持原方向的惯性，这就是 momentum SGD 的灵感来源。具体地，momentum SGD 更新如下：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+v&:=\mu v-\alpha\ \mathrm dx\\
+x&:=x+v
+\end{align}</script><p>其中，$\alpha$ 为学习率，$\mu$ 可以看作是摩擦因子。</p>
+</li>
+<li><p><strong>Nesterov Momentum</strong>. 这是另一种 momentum update. 不同于上一条，Nesterov Momentum 计算随“惯性”移动一段距离之后的梯度再更新，见下图：</p>
+<p><img src= "/img/loading.gif" data-src="momentum.jpeg" width="80%" height="80%" /></p>
+<p>具体地，Nesterov Momentum 更新如下：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+x_\text{ahead}&:=x+\mu v\\
+v &:= \mu v-\alpha\ \mathrm dx_\text{ahead}\\
+x&:=x+v
+\end{align}</script></li>
+</ul>
+<h2 id="Annealing-the-learning-rate"><a href="#Annealing-the-learning-rate" class="headerlink" title="Annealing the learning rate"></a>Annealing the learning rate</h2><p>在学习过程中不断减小 learning rate 往往有帮助，一下三种方式是常用的 learning rate decay 实现方式：</p>
+<ul>
+<li><strong>Step decay</strong>. 每迭代几次后将 learning rate 减小，例如每 $20$ 次迭代后减小到原来的 $0.1$，或者每 $5$ 次迭代减小一半等。这些参数依赖于具体问题和模型。一种启发式方法是当 validation error 停止减小时就减小 learning rate. </li>
+<li><strong>Exponential decay</strong>. 依 $\alpha=\alpha_0e^{-kt}$ 减小，其中 $\alpha_0,k$ 是超参数，$t$ 是迭代次数。</li>
+<li>$1/t$ <strong>decay</strong>. 依 $\alpha=\alpha_0/(1+kt)$ 减小。</li>
+</ul>
+<p>实践中，Step decay 稍稍更受喜爱一些，因为其解释性比其他的强。</p>
+<h2 id="Second-order-methods"><a href="#Second-order-methods" class="headerlink" title="Second order methods"></a>Second order methods</h2><p>梯度下降及其延伸算法只需要用到一阶导数，即梯度。还有些最优化算法需要用到二阶导数。</p>
+<ul>
+<li><p><strong>Newton’s method</strong>. </p>
+<script type="math/tex; mode=display">
+x:=x-[Hf(x)]^{-1}\nabla f(x)</script><p>其中，$Hf(x)$ 表示 Hessian matrix，$\nabla f(x)$ 表示 $f(x)$ 的梯度向量。</p>
+<p>注意到上述更新中不含有学习率这一超参数，这也是其优于一阶方法所在。</p>
+<p><br></p>
+<p>但是，Newton’s method 有一个及其显著的缺点，即 Hessian matrix 过于庞大，$n$ 个参数的 Hessian matrix 是 $n\times n$ 的，计算耗时且难以存储。因此，出现了众多 <em>quasi-Newton</em> methods，例如 $\text{L-BFGS}$，它们不需要将 Hessian matrix 完整计算出来. </p>
+</li>
+</ul>
+<h2 id="Per-parameter-adaptive-learning-rate-methods"><a href="#Per-parameter-adaptive-learning-rate-methods" class="headerlink" title="Per-parameter adaptive learning rate methods"></a>Per-parameter adaptive learning rate methods</h2><p>在之前的算法中，学习率是全局的且对所有参数都一样。调整学习率是一个耗时耗力的过程，因此人们发明了许多自动调整学习率的方法，且这些学习率甚至能对每一个参数进行调整。</p>
+<p>虽然这些方法也有超参数，但它们与纯粹的学习率相比，能在更大的范围内表现较好，因而更好调参。</p>
+<ul>
+<li><p><strong>Adagrad</strong>：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\text{cache}&:=\text{cache}+(\mathrm dx)^2\\
+x&:=x-\alpha\ \frac{\mathrm dx}{\sqrt{\text{cache}}+\text{eps}}
+\end{align}</script><p>注意，上式中对向量的运算符定义为与 <code>numpy</code> 相同。</p>
+<p>对上式的理解是：$\text{cache}$ 一路记录了每个参数的梯度平方和，如果某个参数有较大的梯度，那么它的学习率将减小；相反，梯度较小的参数将有较大的学习率。</p>
+</li>
+<li><p><strong>RMSprop</strong>：RMSprop 在 Adagrad 的基础上进行了简单的修改：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\text{cache}&:=\text{decay rate}\times \text{cache}+(1-\text{decay rate})\times (\mathrm dx)^2\\
+x&:=x-\alpha\ \frac{\mathrm dx}{\sqrt{\text{cache}}+\text{eps}}
+\end{align}</script><p>也即是增加了 $\text{decay rate}$ 这一超参数，一般取值为 $0.9,0.99,0.999$. </p>
+</li>
+<li><p><strong>Adam</strong>：可以看作是 RMSprop 带 momentum 的版本，其（简化的）更新如下：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+m&:=\beta_1m+(1-\beta_1)\mathrm dx\\
+v&:=\beta_2v+(1-\beta_2)(\mathrm dx)^2\\
+x&:=x-\alpha\ \frac{m}{\sqrt{v}+\text{eps}}
+\end{align}</script><p>典型的参数是：$\text{eps}=10^{-8},\beta_1=0.9,\beta_2=0.999$. </p>
+<p>完整的 Adam 算法存在一个 <em>bias correction</em> 机制：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+m&:=\beta_1m+(1-\beta_1)\mathrm dx\\
+\color{purple}{mt}&\color{purple}{:={m}/({1-\beta_1^t})}\\
+v&:=\beta_2v+(1-\beta_2)(\mathrm dx)^2\\
+\color{purple}{vt}&\color{purple}{:=v/(1-\beta_2^t)}\\
+x&:=x-\alpha\ \frac{\color{purple}{mt}}{\sqrt{\color{purple}{vt}}+\text{eps}}
+\end{align}</script></li>
+</ul>
+<h1 id="Hyperparameter-optimization"><a href="#Hyperparameter-optimization" class="headerlink" title="Hyperparameter optimization"></a>Hyperparameter optimization</h1></div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">xyfJASON</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://xyfjason.github.io/2021/02/27/CS231n-%E4%B8%83%C2%B7Neural-Networks-Part-3/">https://xyfjason.github.io/2021/02/27/CS231n-%E4%B8%83%C2%B7Neural-Networks-Part-3/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://xyfjason.github.io" target="_blank">xyfJASON</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></div><div class="post_share"><div class="social-share" data-image="/gallery/pexels_woman-book.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"/><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js"></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2021/02/25/CS231n-%E5%85%AD%C2%B7Neural-Networks-Part-2/"><img class="next-cover" data-src="/gallery/pexels_woman-book.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">[CS231n]六·Neural Networks Part 2</div></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2020/02/19/CDQ分治学习笔记/" title="CDQ分治学习笔记"><img class="relatedPosts_cover" data-src="/gallery/pexels_snowflake.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-02-19</div><div class="relatedPosts_title">CDQ分治学习笔记</div></div></a></div><div class="relatedPosts_item"><a href="/2021/02/21/CS231n-一·Image-Classification/" title="[CS231n]一·Image Classification"><img class="relatedPosts_cover" data-src="/gallery/pexels_woman-book.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2021-02-21</div><div class="relatedPosts_title">[CS231n]一·Image Classification</div></div></a></div><div class="relatedPosts_item"><a href="/2021/02/25/CS231n-六·Neural-Networks-Part-2/" title="[CS231n]六·Neural Networks Part 2"><img class="relatedPosts_cover" data-src="/gallery/pexels_woman-book.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2021-02-25</div><div class="relatedPosts_title">[CS231n]六·Neural Networks Part 2</div></div></a></div><div class="relatedPosts_item"><a href="/2021/02/22/CS231n-二·Linear-Classification/" title="[CS231n]二·Linear Classification"><img class="relatedPosts_cover" data-src="/gallery/pexels_woman-book.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2021-02-22</div><div class="relatedPosts_title">[CS231n]二·Linear Classification</div></div></a></div><div class="relatedPosts_item"><a href="/2021/02/24/CS231n-五·Neural-Networks-Part-1/" title="[CS231n]五·Neural Networks Part 1"><img class="relatedPosts_cover" data-src="/gallery/pexels_woman-book.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2021-02-24</div><div class="relatedPosts_title">[CS231n]五·Neural Networks Part 1</div></div></a></div><div class="relatedPosts_item"><a href="/2020/04/18/DSU-on-tree-学习笔记/" title="DSU on tree 学习笔记"><img class="relatedPosts_cover" data-src="/gallery/pexels_tree-snow.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-04-18</div><div class="relatedPosts_title">DSU on tree 学习笔记</div></div></a></div></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div class="vcomment" id="vcomment"></div><script src="https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script><script>var requestSetting = function (from,set) {
+  var from = from
+  var setting = set.split(',').filter(function(item){
+  return from.indexOf(item) > -1
+  });
+  setting = setting.length == 0 ? from :setting;
+  return setting
+}
+
+var guestInfo = requestSetting(['nick','mail','link'],'nick,mail,link')
+var requiredFields = requestSetting(['nick','mail'],'nick,mail')
+
+window.valine = new Valine({
+  el:'#vcomment',
+  appId: 'ovQ7Ukrh29Ex4n5TKqN19d5D-MdYXbMMI',
+  appKey: 'bGKUwhryO4w9EE9TcpEaOKGF',
+  placeholder: 'Please leave your footprints',
+  avatar: 'monsterid',
+  meta: guestInfo,
+  pageSize: '10',
+  lang: 'zh-CN',
+  recordIP: false,
+  serverURLs: '',
+  emojiCDN: '',
+  emojiMaps: "",
+  enableQQ: false,
+  requiredFields: requiredFields
+});</script></div></article></main><footer id="footer" style="background-image: url(/gallery/pexels_woman-book.jpg)" data-type="photo"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By xyfJASON</div><div class="framework-info"><span>驱动 </span><a href="https://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><button id="readmode" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font_plus" title="放大字体"><i class="fas fa-plus"></i></button><button id="font_minus" title="缩小字体"><i class="fas fa-minus"></i></button><button id="darkmode" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" title="设置"><i class="fas fa-cog"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fas fa-comments"></i></a><button class="close" id="mobile-toc-button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a href="https://github.com/wzpan/hexo-generator-search" target="_blank" rel="noopener" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div class="search-mask"></div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  CommonHTML: {
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "HTML-CSS": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "SVG": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  }
+});
+</script><script type="text/x-mathjax-config">MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for (i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script defer id="ribbon" src="/js/third-party/canvas-ribbon.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><script src="/js/search/local-search.js"></script><script>if (document.getElementsByClassName('mermaid').length) {
+  loadScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js',function () {
+    mermaid.initialize({
+      theme: 'default',
+  })
+})
+}</script></body></html>
