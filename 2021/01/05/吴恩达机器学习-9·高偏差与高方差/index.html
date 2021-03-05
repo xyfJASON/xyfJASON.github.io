@@ -1,0 +1,200 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>[吴恩达机器学习]9·高偏差与高方差 | xyfJASON</title><meta name="description" content="吴恩达机器学习系列课程：https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV164411b7dx"><meta name="keywords" content="学习笔记"><meta name="author" content="xyfJASON"><meta name="copyright" content="xyfJASON"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/myimg/myfavicon.png"><link rel="canonical" href="https://xyfjason.github.io/2021/01/05/%E5%90%B4%E6%81%A9%E8%BE%BE%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-9%C2%B7%E9%AB%98%E5%81%8F%E5%B7%AE%E4%B8%8E%E9%AB%98%E6%96%B9%E5%B7%AE/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta property="og:type" content="article"><meta property="og:title" content="[吴恩达机器学习]9·高偏差与高方差"><meta property="og:url" content="https://xyfjason.github.io/2021/01/05/%E5%90%B4%E6%81%A9%E8%BE%BE%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-9%C2%B7%E9%AB%98%E5%81%8F%E5%B7%AE%E4%B8%8E%E9%AB%98%E6%96%B9%E5%B7%AE/"><meta property="og:site_name" content="xyfJASON"><meta property="og:description" content="吴恩达机器学习系列课程：https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV164411b7dx"><meta property="og:image" content="https://xyfjason.github.io/gallery/pexels_walle.jpg"><meta property="article:published_time" content="2021-01-05T07:12:20.000Z"><meta property="article:modified_time" content="2021-03-05T12:53:38.061Z"><meta name="twitter:card" content="summary"><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#fff')
+  }
+}
+
+var getCookies = function (name) {
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) return parts.pop().split(';').shift()
+}
+
+var autoChangeMode = 'false'
+var t = getCookies('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (Cookies.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="prev" title="[吴恩达机器学习]10·支持向量机" href="https://xyfjason.github.io/2021/01/17/%E5%90%B4%E6%81%A9%E8%BE%BE%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-10%C2%B7%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/"><link rel="next" title="[吴恩达机器学习]8·神经网络之反向传播" href="https://xyfjason.github.io/2020/12/30/%E5%90%B4%E6%81%A9%E8%BE%BE%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-8%C2%B7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B9%8B%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容:${query}"}},
+  translate: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  runtime: false,
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  highlightCopy: true,
+  highlightLang: true,
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isanchor: false    
+}</script><script>var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isSidebar: true
+  }</script><noscript><style>
+#nav {
+  opacity: 1
+}
+.justified-gallery img{
+  opacity: 1
+}
+</style></noscript><meta name="generator" content="Hexo 4.2.1"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/myimg/myavatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">134</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">12</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">21</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down menus-expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/categories/%E9%9A%8F%E7%AC%94/"><i class="fa-fw fas fa-align-center"></i><span> 随笔</span></a></li><li><a class="site-page" href="/categories/%E9%A1%B9%E7%9B%AE/"><i class="fa-fw fas fa-graduation-cap"></i><span> 项目记录</span></a></li><li><a class="site-page" href="/categories/%E3%80%8A%E5%85%B7%E4%BD%93%E6%95%B0%E5%AD%A6%E3%80%8B/"><i class="fa-fw fas fa-book"></i><span> 具体数学</span></a></li><li><a class="site-page" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fas fa-desktop"></i><span> 机器学习</span></a></li><li><a class="site-page" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/"><i class="fa-fw fas fa-eye"></i><span> 计算机视觉</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/website/"><i class="fa-fw fas fa-magic"></i><span> 网站收藏</span></a></div></div></div></div><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#训练集、验证集与测试集"><span class="toc-number">1.</span> <span class="toc-text">训练集、验证集与测试集</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#高偏差与高方差"><span class="toc-number">2.</span> <span class="toc-text">高偏差与高方差</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#学习曲线"><span class="toc-number">3.</span> <span class="toc-text">学习曲线</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实现"><span class="toc-number">4.</span> <span class="toc-text">实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#第一部分·正则化线性回归"><span class="toc-number">4.1.</span> <span class="toc-text">第一部分·正则化线性回归</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第二部分·学习曲线的绘制"><span class="toc-number">4.2.</span> <span class="toc-text">第二部分·学习曲线的绘制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第三部分·多项式回归"><span class="toc-number">4.3.</span> <span class="toc-text">第三部分·多项式回归</span></a></li></ol></li></ol></div></div></div><div class="code-close" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/gallery/pexels_walle.jpg)"><nav id="nav"><span class="pull-left" id="blog_name"><a class="blog_title" id="site-name" href="/">xyfJASON</a></span><span class="pull-right menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down menus-expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/categories/%E9%9A%8F%E7%AC%94/"><i class="fa-fw fas fa-align-center"></i><span> 随笔</span></a></li><li><a class="site-page" href="/categories/%E9%A1%B9%E7%9B%AE/"><i class="fa-fw fas fa-graduation-cap"></i><span> 项目记录</span></a></li><li><a class="site-page" href="/categories/%E3%80%8A%E5%85%B7%E4%BD%93%E6%95%B0%E5%AD%A6%E3%80%8B/"><i class="fa-fw fas fa-book"></i><span> 具体数学</span></a></li><li><a class="site-page" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fas fa-desktop"></i><span> 机器学习</span></a></li><li><a class="site-page" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/"><i class="fa-fw fas fa-eye"></i><span> 计算机视觉</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/website/"><i class="fa-fw fas fa-magic"></i><span> 网站收藏</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">[吴恩达机器学习]9·高偏差与高方差</div></div><div id="post-meta"><div class="meta-firstline"><time class="post-meta__date"><span class="post-meta__date-created" title="发表于 2021-01-05 15:12:20"><i class="far fa-calendar-alt fa-fw"></i> 发表于 2021-01-05</span><span class="post-meta__separator">|</span><span class="post-meta__date-updated" title="更新于 2021-03-05 20:53:38"><i class="fas fa-history fa-fw"></i> 更新于 2021-03-05</span></time><span class="post-meta__categories"><span class="post-meta__separator">|</span><i class="fas fa-inbox fa-fw post-meta__icon"></i><a class="post-meta__categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></span></div><div class="meta-secondline"> <span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta__icon"></i><span>字数总计:</span><span class="word-count">1.7k</span><span class="post-meta__separator">|</span><i class="far fa-clock fa-fw post-meta__icon"></i><span>阅读时长: 6 分钟</span></span></div><div class="meta-thirdline"><span class="post-meta-pv-cv"><span class="post-meta__separator">|</span><i class="far fa-eye fa-fw post-meta__icon"></i><span>阅读量:</span><span id="busuanzi_value_page_pv"></span></span><span class="post-meta-commentcount"></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><p>吴恩达机器学习系列课程：<a href="https://www.bilibili.com/video/BV164411b7dx" target="_blank" rel="noopener">https://www.bilibili.com/video/BV164411b7dx</a></p>
+<a id="more"></a>
+<h1 id="训练集、验证集与测试集"><a href="#训练集、验证集与测试集" class="headerlink" title="训练集、验证集与测试集"></a>训练集、验证集与测试集</h1><p>在以往的实验中，我们把所有数据集拿来训练一个模型，之后用它来测试准确率。这显然不是一个好的做法，因为即便准确率很高，那也可能有过拟合的问题。正确的做法应该是用一个与训练集独立的测试集进行测试，这样才能保证得到的结果公平有效。</p>
+<p>进一步，如果模型中含有超参数，例如正则化的参数 $\lambda$，这是需要我们人工设置的。不同的超参数得到的结果也不同，我们自然会去选择结果最好的超参数，于是又产生了同样的问题：我们对超参数的选择依赖于模型的结果，而结果又产生自测试集，所以我们依旧没能做到在一个完全独立的测试集上进行测试。所以我们引入验证集，即用验证集而非测试集去调参，最后在测试集上跑结果。测试集自始至终不参与模型的建立。</p>
+<p>值得一提的是，如果我们在训练过程中加入了正则项，那么在计算模型的代价函数（误差）的时候应该去掉正则项。这是因为加入正则项的目的是训练出一个更为合理的参数 $\theta$，而为了评价这个参数 $\theta$ 的好坏，原本的代价函数才是真正的代价。</p>
+<h1 id="高偏差与高方差"><a href="#高偏差与高方差" class="headerlink" title="高偏差与高方差"></a>高偏差与高方差</h1><p>在欠拟合的时候，我们称模型是高偏差的；过拟合时，称模型是高方差的。以多项式回归为例，随着多项式系数的增加，我们从欠拟合逐渐过渡到过拟合，训练集上的代价函数 $J_\text{train}(\theta)$ 逐渐减小，但是验证集上的代价函数 $J_\text{valid}(\theta)$ 先减小后增大，形成下图所示情况：</p>
+<p><img src= "/img/loading.gif" data-src="img.png" width="50%" height="50%" /></p>
+<h1 id="学习曲线"><a href="#学习曲线" class="headerlink" title="学习曲线"></a>学习曲线</h1><p>误差函数关于训练集大小的曲线，称为学习曲线。作出学习曲线有利于帮助我们分析模型是否过拟合/欠拟合。</p>
+<p>如果模型欠拟合，具有高偏差，当训练集大小很小时，$J_\text{train}(\theta)$ 比较小，而 $J_\text{valid}(\theta)$ 很大；随着训练集大小的增大，$J_\text{train}(\theta)$ 迅速增大，$J_\text{valid}(\theta)$ 减小，但是减小的幅度不大；最后，当训练集大小很大时，二者基本相当且都比较大。</p>
+<p>如果模型过拟合，具有高方差，当训练集大小很小时，$J_\text{train}(\theta)$ 很小，而 $J_\text{valid}(\theta)$ 很大；随着训练集大小的增大，$J_\text{train}(\theta)$ 增大，但是增大的幅度不大，而 $J_\text{valid}(\theta)$ 减小，但是减小的幅度也不大；最后，当训练集大小很大时， $J_\text{train}(\theta)$ 较小，但 $J_\text{valid}(\theta)$ 较大。</p>
+<p><img src= "/img/loading.gif" data-src="img2.png" alt=""></p>
+<p>从上面的分析以及图像也可以看出，如果模型发生了欠拟合，那么增加训练集的数据量并没有什么帮助；而如果模型发生了过拟合，增加训练集的数据量有一定的帮助。</p>
+<h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><h2 id="第一部分·正则化线性回归"><a href="#第一部分·正则化线性回归" class="headerlink" title="第一部分·正则化线性回归"></a>第一部分·正则化线性回归</h2><p>首先看一下数据集：</p>
+<p><img src= "/img/loading.gif" data-src="Figure_0.png" alt=""></p>
+<p>回忆正则化线性回归的矩阵形式：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+J(\theta)&=\frac{1}{2m}\left[\theta^TX^TX\theta-2\theta^TX^Ty+y^Ty+\lambda\hat\theta^T\hat\theta\right]\\
+\frac{\partial J}{\partial \theta}&=\frac{1}{m}\left[X^TX\theta-X^Ty+\lambda\hat\theta\right]
+\end{align}</script><p>其中，$\hat\theta$ 是将 $\theta_0$ 置为 $0$ 后的 $\theta$（因为不对 $\theta_0$ 做惩罚）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> scipy.io <span class="keyword">import</span> loadmat</span><br><span class="line"><span class="keyword">from</span> scipy.optimize <span class="keyword">import</span> minimize</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">data = loadmat(<span class="string">'ex5data1.mat'</span>)</span><br><span class="line">X, y, Xval, yval, Xtest, ytest = \</span><br><span class="line">data[<span class="string">'X'</span>], data[<span class="string">'y'</span>], data[<span class="string">'Xval'</span>], data[<span class="string">'yval'</span>], data[<span class="string">'Xtest'</span>], data[<span class="string">'ytest'</span>]</span><br><span class="line">X = np.hstack((np.ones((X.shape[<span class="number">0</span>], <span class="number">1</span>)), X))</span><br><span class="line">Xval = np.hstack((np.ones((Xval.shape[<span class="number">0</span>], <span class="number">1</span>)), Xval))</span><br><span class="line">Xtest = np.hstack((np.ones((Xtest.shape[<span class="number">0</span>], <span class="number">1</span>)), Xtest))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">unseq</span><span class="params">(theta)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> theta.reshape(theta.shape[<span class="number">0</span>], <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">seq</span><span class="params">(theta)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> theta.flatten()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">J</span><span class="params">(theta, X, y, lamb)</span>:</span></span><br><span class="line">    m = X.shape[<span class="number">0</span>]</span><br><span class="line">    thetahat = np.vstack((np.zeros((<span class="number">1</span>, <span class="number">1</span>)), theta[<span class="number">1</span>:, :]))</span><br><span class="line">    <span class="keyword">return</span> ((theta.T@X.T@X@theta<span class="number">-2</span>*theta.T@X.T@y+y.T@y+lamb*thetahat.T@thetahat)/m/<span class="number">2</span>)[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">partJ</span><span class="params">(theta, X, y, lamb)</span>:</span></span><br><span class="line">    m = X.shape[<span class="number">0</span>]</span><br><span class="line">    thetahat = np.vstack((np.zeros((<span class="number">1</span>, <span class="number">1</span>)), theta[<span class="number">1</span>:, :]))</span><br><span class="line">    <span class="keyword">return</span> (X.T@X@theta-X.T@y+lamb*thetahat)/m</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Train</span><span class="params">(X, y)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> minimize(fun = <span class="keyword">lambda</span> theta, X, y, lamb: J(unseq(theta), X, y, lamb), </span><br><span class="line">                   x0 = np.array([<span class="number">1</span>, <span class="number">1</span>]), </span><br><span class="line">                   jac = <span class="keyword">lambda</span> theta, X, y, lamb: seq(partJ(unseq(theta), X, y, lamb)), </span><br><span class="line">                   args = (X, y, <span class="number">1</span>), </span><br><span class="line">                   method = <span class="string">'CG'</span>)</span><br><span class="line"></span><br><span class="line">res = Train(X, y)</span><br><span class="line">print(res)</span><br></pre></td></tr></table></figure>
+<p>回归结果为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">    fun: 22.3795418229475</span><br><span class="line">    jac: array([ 3.74520898e-06, -1.25949765e-07])</span><br><span class="line">message: &#39;Optimization terminated successfully.&#39;</span><br><span class="line">   nfev: 28</span><br><span class="line">    nit: 18</span><br><span class="line">   njev: 28</span><br><span class="line"> status: 0</span><br><span class="line">success: True</span><br><span class="line">      x: array([13.08771802,  0.36774202])</span><br></pre></td></tr></table></figure>
+<p>回归曲线如下：</p>
+<p><img src= "/img/loading.gif" data-src="Figure_1.png" width="50%" height="50%" /></p>
+<h2 id="第二部分·学习曲线的绘制"><a href="#第二部分·学习曲线的绘制" class="headerlink" title="第二部分·学习曲线的绘制"></a>第二部分·学习曲线的绘制</h2><p>依次增大训练集的大小，计算训练集的误差和测试集的代价函数（注意这时候计算代价应该取 $\lambda=0$）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Z_train = []</span><br><span class="line">Z_valid = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">1</span>+X.shape[<span class="number">0</span>]):</span><br><span class="line">    res = Train(X[:i, :], y[:i, :])</span><br><span class="line">    Z_train.append(J(unseq(res.x), X[:i, :], y[:i, :], <span class="number">0</span>))</span><br><span class="line">    Z_valid.append(J(unseq(res.x), Xval, yval, <span class="number">0</span>))</span><br><span class="line"></span><br><span class="line">ax = plt.subplot(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">ax.set_xlabel(<span class="string">'size of training set'</span>)</span><br><span class="line">ax.set_ylabel(<span class="string">'Cost'</span>)</span><br><span class="line">ax.set_title(<span class="string">'learning curves'</span>)</span><br><span class="line">ax.plot(range(<span class="number">1</span>, <span class="number">1</span>+len(Z_train)), Z_train, color=<span class="string">'darkviolet'</span>, label=<span class="string">'Train'</span>)</span><br><span class="line">ax.plot(range(<span class="number">1</span>, <span class="number">1</span>+len(Z_valid)), Z_valid, color=<span class="string">'tomato'</span>, label=<span class="string">'Validation'</span>)</span><br><span class="line">ax.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p>作图如下：</p>
+<p><img src= "/img/loading.gif" data-src="Figure_2.png" width="50%" height="50%" /></p>
+<p>可以看见，这是一个典型的欠拟合图像，模型是高偏差的。</p>
+<h2 id="第三部分·多项式回归"><a href="#第三部分·多项式回归" class="headerlink" title="第三部分·多项式回归"></a>第三部分·多项式回归</h2><p>欠拟合的原因是我们使用了线性回归，而数据集显然不是线性的。为了更好的拟合之，我们采用多项式回归。</p>
+<p>注意增加高次特征后，特征取值范围可能很大，需要规范化处理：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">data = loadmat(<span class="string">'ex5data1.mat'</span>)</span><br><span class="line">X, y, Xval, yval, Xtest, ytest = \</span><br><span class="line">data[<span class="string">'X'</span>], data[<span class="string">'y'</span>], data[<span class="string">'Xval'</span>], data[<span class="string">'yval'</span>], data[<span class="string">'Xtest'</span>], data[<span class="string">'ytest'</span>]</span><br><span class="line"></span><br><span class="line">dim = <span class="number">9</span></span><br><span class="line">meanX, stdX = [], []</span><br><span class="line">meany, stdy = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">featurePrepare</span><span class="params">(X, y)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">	feature extension &amp; normalization</span></span><br><span class="line"><span class="string">	"""</span></span><br><span class="line">    <span class="keyword">global</span> meanX, stdX, meany, stdy</span><br><span class="line">    res = np.empty((X.shape[<span class="number">0</span>], <span class="number">0</span>))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(dim):</span><br><span class="line">        tmpX = X ** i</span><br><span class="line">        meanX.append(np.mean(tmpX, axis=<span class="number">0</span>))</span><br><span class="line">        stdX.append(np.std(tmpX, axis=<span class="number">0</span>))</span><br><span class="line">        <span class="keyword">if</span> i:</span><br><span class="line">            tmpX = (tmpX - meanX[i]) / stdX[i] <span class="keyword">if</span> stdX[i] <span class="keyword">else</span> tmpX - meamX[i]</span><br><span class="line">        res = np.hstack((res, tmpX))</span><br><span class="line">    meany = np.mean(y, axis=<span class="number">0</span>)</span><br><span class="line">    stdy = np.std(y, axis=<span class="number">0</span>)</span><br><span class="line">    y = (y - meany) / stdy <span class="keyword">if</span> stdy <span class="keyword">else</span> y - meany</span><br><span class="line">    <span class="keyword">return</span> res, y</span><br></pre></td></tr></table></figure>
+<p>首先，使用最高次为 $8$ 的多项式，且正则化项 $\lambda=0$，得到拟合效果和学习曲线如下：</p>
+<p><img src= "/img/loading.gif" data-src="Figure_4.png" alt=""></p>
+<p>过拟合。</p>
+<p>取 $\lambda=1$，得到拟合效果和学习曲线如下：</p>
+<p><img src= "/img/loading.gif" data-src="Figure_5.png" alt=""></p>
+<p>取 $\lambda=50$，得到拟合效果和学习曲线如下：</p>
+<p><img src= "/img/loading.gif" data-src="Figure_6.png" alt=""></p>
+<p>欠拟合。</p>
+<p><br></p>
+<p>接下来我们依次计算在若干 $\lambda$ 下的代价，并作图如下：</p>
+<p><img src= "/img/loading.gif" data-src="Figure_7.png" width="50%" height="50%" /></p>
+<p>可以看出，在 $\lambda=3$ 的时候验证集的代价最小，所以我们最终可以选定取 $\lambda=3$. </p>
+<p>此时，测试集的代价为：$J_\text{test}(\theta)=0.01393303991254464$. </p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">xyfJASON</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://xyfjason.github.io/2021/01/05/%E5%90%B4%E6%81%A9%E8%BE%BE%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-9%C2%B7%E9%AB%98%E5%81%8F%E5%B7%AE%E4%B8%8E%E9%AB%98%E6%96%B9%E5%B7%AE/">https://xyfjason.github.io/2021/01/05/%E5%90%B4%E6%81%A9%E8%BE%BE%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-9%C2%B7%E9%AB%98%E5%81%8F%E5%B7%AE%E4%B8%8E%E9%AB%98%E6%96%B9%E5%B7%AE/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://xyfjason.github.io" target="_blank">xyfJASON</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></div><div class="post_share"><div class="social-share" data-image="/gallery/pexels_woman-book.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"/><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/01/17/%E5%90%B4%E6%81%A9%E8%BE%BE%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-10%C2%B7%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/"><img class="prev-cover" data-src="/gallery/pexels_walle.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">[吴恩达机器学习]10·支持向量机</div></div></a></div><div class="next-post pull-right"><a href="/2020/12/30/%E5%90%B4%E6%81%A9%E8%BE%BE%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-8%C2%B7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B9%8B%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/"><img class="next-cover" data-src="/gallery/pexels_walle.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">[吴恩达机器学习]8·神经网络之反向传播</div></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2020/02/19/CDQ分治学习笔记/" title="CDQ分治学习笔记"><img class="relatedPosts_cover" data-src="/gallery/pexels_snowflake.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-02-19</div><div class="relatedPosts_title">CDQ分治学习笔记</div></div></a></div><div class="relatedPosts_item"><a href="/2021/02/21/CS231n-1·Image-Classification/" title="[CS231n]1·Image Classification"><img class="relatedPosts_cover" data-src="/gallery/pexels_woman-book.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2021-02-21</div><div class="relatedPosts_title">[CS231n]1·Image Classification</div></div></a></div><div class="relatedPosts_item"><a href="/2021/02/22/CS231n-2·Linear-Classification/" title="[CS231n]2·Linear Classification"><img class="relatedPosts_cover" data-src="/gallery/pexels_woman-book.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2021-02-22</div><div class="relatedPosts_title">[CS231n]2·Linear Classification</div></div></a></div><div class="relatedPosts_item"><a href="/2021/02/24/CS231n-3·Neural-Networks/" title="[CS231n]3·Neural Networks"><img class="relatedPosts_cover" data-src="/gallery/pexels_woman-book.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2021-02-24</div><div class="relatedPosts_title">[CS231n]3·Neural Networks</div></div></a></div><div class="relatedPosts_item"><a href="/2021/03/03/CS231n-4·Convoluntional-Neural-Networks/" title="[CS231n]4·Convoluntional Neural Networks"><img class="relatedPosts_cover" data-src="/gallery/pexels_woman-book.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-03</div><div class="relatedPosts_title">[CS231n]4·Convoluntional Neural Networks</div></div></a></div><div class="relatedPosts_item"><a href="/2020/04/18/DSU-on-tree-学习笔记/" title="DSU on tree 学习笔记"><img class="relatedPosts_cover" data-src="/gallery/pexels_tree-snow.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-04-18</div><div class="relatedPosts_title">DSU on tree 学习笔记</div></div></a></div></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div class="vcomment" id="vcomment"></div><script src="https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script><script>var requestSetting = function (from,set) {
+  var from = from
+  var setting = set.split(',').filter(function(item){
+  return from.indexOf(item) > -1
+  });
+  setting = setting.length == 0 ? from :setting;
+  return setting
+}
+
+var guestInfo = requestSetting(['nick','mail','link'],'nick,mail,link')
+var requiredFields = requestSetting(['nick','mail'],'nick,mail')
+
+window.valine = new Valine({
+  el:'#vcomment',
+  appId: 'ovQ7Ukrh29Ex4n5TKqN19d5D-MdYXbMMI',
+  appKey: 'bGKUwhryO4w9EE9TcpEaOKGF',
+  placeholder: 'Please leave your footprints',
+  avatar: 'monsterid',
+  meta: guestInfo,
+  pageSize: '10',
+  lang: 'zh-CN',
+  recordIP: false,
+  serverURLs: '',
+  emojiCDN: '',
+  emojiMaps: "",
+  enableQQ: false,
+  requiredFields: requiredFields
+});</script></div></article></main><footer id="footer" style="background-image: url(/gallery/pexels_walle.jpg)" data-type="photo"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By xyfJASON</div><div class="framework-info"><span>驱动 </span><a href="https://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><button id="readmode" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font_plus" title="放大字体"><i class="fas fa-plus"></i></button><button id="font_minus" title="缩小字体"><i class="fas fa-minus"></i></button><button id="darkmode" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" title="设置"><i class="fas fa-cog"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fas fa-comments"></i></a><button class="close" id="mobile-toc-button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a href="https://github.com/wzpan/hexo-generator-search" target="_blank" rel="noopener" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div class="search-mask"></div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  CommonHTML: {
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "HTML-CSS": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "SVG": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  }
+});
+</script><script type="text/x-mathjax-config">MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for (i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script defer id="ribbon" src="/js/third-party/canvas-ribbon.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><script src="/js/search/local-search.js"></script><script>if (document.getElementsByClassName('mermaid').length) {
+  loadScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js',function () {
+    mermaid.initialize({
+      theme: 'default',
+  })
+})
+}</script></body></html>

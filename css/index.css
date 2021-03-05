@@ -1981,6 +1981,9 @@ blockquote footer cite:before {
   -ms-transform: rotate(-90deg);
   transform: rotate(-90deg);
 }
+#aside_content .card-categories .card-category-list > .parent + .child {
+  display: none;
+}
 #aside_content .card-webinfo .webinfo {
   padding: 0.2rem 1rem;
 }
