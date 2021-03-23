@@ -1,0 +1,185 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>[CS231n]7·Visualizing and Understanding | xyfJASON</title><meta name="description" content="Stanford CS231n Convolutional Neural Networks for Visual Recognition"><meta name="keywords" content="学习笔记"><meta name="author" content="xyfJASON"><meta name="copyright" content="xyfJASON"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/myimg/myfavicon.png"><link rel="canonical" href="https://xyfjason.github.io/2021/03/16/CS231n-7%C2%B7Visualizing-and-Understanding/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta property="og:type" content="article"><meta property="og:title" content="[CS231n]7·Visualizing and Understanding"><meta property="og:url" content="https://xyfjason.github.io/2021/03/16/CS231n-7%C2%B7Visualizing-and-Understanding/"><meta property="og:site_name" content="xyfJASON"><meta property="og:description" content="Stanford CS231n Convolutional Neural Networks for Visual Recognition"><meta property="og:image" content="https://xyfjason.github.io/gallery/pexels_woman-book.jpg"><meta property="article:published_time" content="2021-03-16T11:26:50.000Z"><meta property="article:modified_time" content="2021-03-17T06:14:12.364Z"><meta name="twitter:card" content="summary"><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#fff')
+  }
+}
+
+var getCookies = function (name) {
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) return parts.pop().split(';').shift()
+}
+
+var autoChangeMode = 'false'
+var t = getCookies('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (Cookies.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="prev" title="Codeforces Round #709 (Div.1, based on Technocup 2021 Final Round)" href="https://xyfjason.github.io/2021/03/23/Codeforces-Round-709-Div-1-based-on-Technocup-2021-Final-Round/"><link rel="next" title="[CS231n]6·Detection and Segmentation" href="https://xyfjason.github.io/2021/03/11/CS231n-6%C2%B7Detection-and-Segmentation/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容:${query}"}},
+  translate: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  runtime: false,
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  highlightCopy: true,
+  highlightLang: true,
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isanchor: false    
+}</script><script>var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isSidebar: true
+  }</script><noscript><style>
+#nav {
+  opacity: 1
+}
+.justified-gallery img{
+  opacity: 1
+}
+</style></noscript><meta name="generator" content="Hexo 4.2.1"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/myimg/myavatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">140</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">12</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">22</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down menus-expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/categories/%E9%9A%8F%E7%AC%94/"><i class="fa-fw fas fa-align-center"></i><span> 随笔</span></a></li><li><a class="site-page" href="/categories/%E9%A1%B9%E7%9B%AE/"><i class="fa-fw fas fa-graduation-cap"></i><span> 项目记录</span></a></li><li><a class="site-page" href="/categories/%E3%80%8A%E5%85%B7%E4%BD%93%E6%95%B0%E5%AD%A6%E3%80%8B/"><i class="fa-fw fas fa-book"></i><span> 具体数学</span></a></li><li><a class="site-page" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fas fa-desktop"></i><span> 机器学习</span></a></li><li><a class="site-page" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/"><i class="fa-fw fas fa-eye"></i><span> 计算机视觉</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/website/"><i class="fa-fw fas fa-magic"></i><span> 网站收藏</span></a></div></div></div></div><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#First-Layer-Visualize-Filters"><span class="toc-number">1.</span> <span class="toc-text">First Layer: Visualize Filters</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Last-Layer"><span class="toc-number">2.</span> <span class="toc-text">Last Layer</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Nearst-Neighbors"><span class="toc-number">2.1.</span> <span class="toc-text">Nearst Neighbors</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dimensionality-Reduction"><span class="toc-number">2.2.</span> <span class="toc-text">Dimensionality Reduction</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Maximally-Activating-Patches"><span class="toc-number">3.</span> <span class="toc-text">Maximally Activating Patches</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Occlusion-Experiments"><span class="toc-number">4.</span> <span class="toc-text">Occlusion Experiments</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Saliency-Maps"><span class="toc-number">5.</span> <span class="toc-text">Saliency Maps</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Intermediate-features-via-guided-backprop"><span class="toc-number">6.</span> <span class="toc-text">Intermediate features via (guided) backprop</span></a></li></ol></div></div></div><div class="code-close" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/gallery/pexels_woman-book.jpg)"><nav id="nav"><span class="pull-left" id="blog_name"><a class="blog_title" id="site-name" href="/">xyfJASON</a></span><span class="pull-right menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down menus-expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/categories/%E9%9A%8F%E7%AC%94/"><i class="fa-fw fas fa-align-center"></i><span> 随笔</span></a></li><li><a class="site-page" href="/categories/%E9%A1%B9%E7%9B%AE/"><i class="fa-fw fas fa-graduation-cap"></i><span> 项目记录</span></a></li><li><a class="site-page" href="/categories/%E3%80%8A%E5%85%B7%E4%BD%93%E6%95%B0%E5%AD%A6%E3%80%8B/"><i class="fa-fw fas fa-book"></i><span> 具体数学</span></a></li><li><a class="site-page" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fas fa-desktop"></i><span> 机器学习</span></a></li><li><a class="site-page" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/"><i class="fa-fw fas fa-eye"></i><span> 计算机视觉</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/website/"><i class="fa-fw fas fa-magic"></i><span> 网站收藏</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">[CS231n]7·Visualizing and Understanding</div></div><div id="post-meta"><div class="meta-firstline"><time class="post-meta__date"><span class="post-meta__date-created" title="发表于 2021-03-16 19:26:50"><i class="far fa-calendar-alt fa-fw"></i> 发表于 2021-03-16</span><span class="post-meta__separator">|</span><span class="post-meta__date-updated" title="更新于 2021-03-17 14:14:12"><i class="fas fa-history fa-fw"></i> 更新于 2021-03-17</span></time><span class="post-meta__categories"><span class="post-meta__separator">|</span><i class="fas fa-inbox fa-fw post-meta__icon"></i><a class="post-meta__categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">计算机视觉</a><i class="fas fa-angle-right post-meta__separator"></i><i class="fas fa-inbox fa-fw post-meta__icon"></i><a class="post-meta__categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/CS231n/">CS231n</a></span></div><div class="meta-secondline"> <span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta__icon"></i><span>字数总计:</span><span class="word-count">690</span><span class="post-meta__separator">|</span><i class="far fa-clock fa-fw post-meta__icon"></i><span>阅读时长: 2 分钟</span></span></div><div class="meta-thirdline"><span class="post-meta-pv-cv"><span class="post-meta__separator">|</span><i class="far fa-eye fa-fw post-meta__icon"></i><span>阅读量:</span><span id="busuanzi_value_page_pv"></span></span><span class="post-meta-commentcount"></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><p><a href="https://cs231n.github.io/" target="_blank" rel="noopener">CS231n Convolutional Neural Networks for Visual Recognition</a></p>
+<p><a href="https://www.bilibili.com/video/BV1nJ411z7fe" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1nJ411z7fe</a></p>
+<a id="more"></a>
+<h1 id="First-Layer-Visualize-Filters"><a href="#First-Layer-Visualize-Filters" class="headerlink" title="First Layer: Visualize Filters"></a>First Layer: Visualize Filters</h1><p>对于第一层卷积层，我们可以可视化每个 filter 的权重，并得到一系列可解释的图片：</p>
+<p><img src= "/img/loading.gif" data-src="first.png" width="80%" height="80%" /></p>
+<p>可以看出，第一层卷积层在寻找一些点与线，以及对立的颜色，可以认为是在寻找物体与物体之间的分割线。</p>
+<p>为什么可视化 filter 的权重是有道理的呢？filter 所做的就是与所有训练数据进行内积运算，而我们知道，两个向量越相近，其内积结果越大，因此，filter 图片上的一条白线，可以认为是众多数据中存在这么一条线，使得 filter 学到了这一特征。</p>
+<hr>
+<h1 id="Last-Layer"><a href="#Last-Layer" class="headerlink" title="Last Layer"></a>Last Layer</h1><h2 id="Nearst-Neighbors"><a href="#Nearst-Neighbors" class="headerlink" title="Nearst Neighbors"></a>Nearst Neighbors</h2><p>最后一层的输出其实可以看作是每个图像的特征向量，因此我们可以画出 nearst neighbors：</p>
+<p><img src= "/img/loading.gif" data-src="last-nn.png" width="80%" height="80%" /></p>
+<p>可以看见，这比我们在第一节课直接用像素空间进行距离的衡量要准确很多。</p>
+<h2 id="Dimensionality-Reduction"><a href="#Dimensionality-Reduction" class="headerlink" title="Dimensionality Reduction"></a>Dimensionality Reduction</h2><p>将最后一层的向量使用降维方法，例如简单的 PCA 或更强大的 <strong>t-SNE</strong> 降维至 $2$ 维并作图。</p>
+<p>在 MNIST 上，我们可以得到：</p>
+<p><img src= "/img/loading.gif" data-src="last-dr.png" width="50%" height="50%" /></p>
+<p>在 CIFAR-10 上，我们把降维后的点放置在网格中（准确来讲，是找出与每个网格点中心最相似的图片），得到如下可视化结果（高清版本参见 <a href="http://cs.stanford.edu/people/karpathy/cnnembed/）：" target="_blank" rel="noopener">http://cs.stanford.edu/people/karpathy/cnnembed/）：</a></p>
+<p><img src= "/img/loading.gif" data-src="last-dr2.png" width="80%" height="80%" /></p>
+<hr>
+<h1 id="Maximally-Activating-Patches"><a href="#Maximally-Activating-Patches" class="headerlink" title="Maximally Activating Patches"></a>Maximally Activating Patches</h1><p>从网络中选择某层的某个 channel，输入若干图片并记录这个 channel 上的数值。由于使用的是卷积神经网络，所以每一个神经元其实感受的是输入图像的某一些小片。将最大激活的图像小片可视化出来，可以得到：</p>
+<p><img src= "/img/loading.gif" data-src="map.png" width="50%" height="50%" /></p>
+<hr>
+<h1 id="Occlusion-Experiments"><a href="#Occlusion-Experiments" class="headerlink" title="Occlusion Experiments"></a>Occlusion Experiments</h1><p>遮盖住输入图像的一部分之后再输入进 CNN，记录分类结果的概率。可以据此做出遮盖不同位置导致不同概率的热点图，如下：</p>
+<p><img src= "/img/loading.gif" data-src="occlusion.png" width="80%" height="80%" /></p>
+<p>显然，那些导致分类概率急剧变小的像素就是图像里关键的地方。</p>
+<hr>
+<h1 id="Saliency-Maps"><a href="#Saliency-Maps" class="headerlink" title="Saliency Maps"></a>Saliency Maps</h1><p>Saliency Maps 和 Occlusion 的目的一样，都是想知道哪些像素对分类结果很重要。</p>
+<p>计算每一类的得分对图像像素的梯度，取绝对值并取 RGB 三个 channel 中的最大值。这样做让我们知道如果一个像素发生了微小扰动，相应类的分类得分将发生多大的变化。如果变化很大，自然这个像素对该分类非常重要。</p>
+<p><img src= "/img/loading.gif" data-src="saliency.png" width="80%" height="80%" /></p>
+<p><br></p>
+<p>由此，我们可以想到把 saliency maps 用在 semantic segmentation 中，并且这样做不需要 semantic segmentation 的训练数据。使用 <strong>GrabCut</strong> 算法可以做到这一点：</p>
+<p><img src= "/img/loading.gif" data-src="grabcut.png" width="80%" height="80%" /></p>
+<hr>
+<h1 id="Intermediate-features-via-guided-backprop"><a href="#Intermediate-features-via-guided-backprop" class="headerlink" title="Intermediate features via (guided) backprop"></a>Intermediate features via (guided) backprop</h1></div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">xyfJASON</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://xyfjason.github.io/2021/03/16/CS231n-7%C2%B7Visualizing-and-Understanding/">https://xyfjason.github.io/2021/03/16/CS231n-7%C2%B7Visualizing-and-Understanding/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://xyfjason.github.io" target="_blank">xyfJASON</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></div><div class="post_share"><div class="social-share" data-image="/myimg/banner.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"/><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/03/23/Codeforces-Round-709-Div-1-based-on-Technocup-2021-Final-Round/"><img class="prev-cover" data-src="/myimg/banner.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Codeforces Round #709 (Div.1, based on Technocup 2021 Final Round)</div></div></a></div><div class="next-post pull-right"><a href="/2021/03/11/CS231n-6%C2%B7Detection-and-Segmentation/"><img class="next-cover" data-src="/gallery/pexels_woman-book.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">[CS231n]6·Detection and Segmentation</div></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2020/02/19/CDQ分治学习笔记/" title="CDQ分治学习笔记"><img class="relatedPosts_cover" data-src="/gallery/pexels_snowflake.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-02-19</div><div class="relatedPosts_title">CDQ分治学习笔记</div></div></a></div><div class="relatedPosts_item"><a href="/2021/02/21/CS231n-1·Image-Classification/" title="[CS231n]1·Image Classification"><img class="relatedPosts_cover" data-src="/gallery/pexels_woman-book.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2021-02-21</div><div class="relatedPosts_title">[CS231n]1·Image Classification</div></div></a></div><div class="relatedPosts_item"><a href="/2021/02/22/CS231n-2·Linear-Classification/" title="[CS231n]2·Linear Classification"><img class="relatedPosts_cover" data-src="/gallery/pexels_woman-book.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2021-02-22</div><div class="relatedPosts_title">[CS231n]2·Linear Classification</div></div></a></div><div class="relatedPosts_item"><a href="/2021/02/24/CS231n-3·Neural-Networks/" title="[CS231n]3·Neural Networks"><img class="relatedPosts_cover" data-src="/gallery/pexels_woman-book.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2021-02-24</div><div class="relatedPosts_title">[CS231n]3·Neural Networks</div></div></a></div><div class="relatedPosts_item"><a href="/2021/03/03/CS231n-4·Convoluntional-Neural-Networks/" title="[CS231n]4·Convoluntional Neural Networks"><img class="relatedPosts_cover" data-src="/gallery/pexels_woman-book.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-03</div><div class="relatedPosts_title">[CS231n]4·Convoluntional Neural Networks</div></div></a></div><div class="relatedPosts_item"><a href="/2021/03/06/CS231n-5·Recurrent-Neural-Networks/" title="[CS231n]5·Recurrent Neural Networks"><img class="relatedPosts_cover" data-src="/gallery/pexels_woman-book.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-06</div><div class="relatedPosts_title">[CS231n]5·Recurrent Neural Networks</div></div></a></div></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div class="vcomment" id="vcomment"></div><script src="https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script><script>var requestSetting = function (from,set) {
+  var from = from
+  var setting = set.split(',').filter(function(item){
+  return from.indexOf(item) > -1
+  });
+  setting = setting.length == 0 ? from :setting;
+  return setting
+}
+
+var guestInfo = requestSetting(['nick','mail','link'],'nick,mail,link')
+var requiredFields = requestSetting(['nick','mail'],'nick,mail')
+
+window.valine = new Valine({
+  el:'#vcomment',
+  appId: 'ovQ7Ukrh29Ex4n5TKqN19d5D-MdYXbMMI',
+  appKey: 'bGKUwhryO4w9EE9TcpEaOKGF',
+  placeholder: 'Please leave your footprints',
+  avatar: 'monsterid',
+  meta: guestInfo,
+  pageSize: '10',
+  lang: 'zh-CN',
+  recordIP: false,
+  serverURLs: '',
+  emojiCDN: '',
+  emojiMaps: "",
+  enableQQ: false,
+  requiredFields: requiredFields
+});</script></div></article></main><footer id="footer" style="background-image: url(/gallery/pexels_woman-book.jpg)" data-type="photo"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By xyfJASON</div><div class="framework-info"><span>驱动 </span><a href="https://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><button id="readmode" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font_plus" title="放大字体"><i class="fas fa-plus"></i></button><button id="font_minus" title="缩小字体"><i class="fas fa-minus"></i></button><button id="darkmode" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" title="设置"><i class="fas fa-cog"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fas fa-comments"></i></a><button class="close" id="mobile-toc-button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a href="https://github.com/wzpan/hexo-generator-search" target="_blank" rel="noopener" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div class="search-mask"></div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  CommonHTML: {
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "HTML-CSS": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "SVG": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  }
+});
+</script><script type="text/x-mathjax-config">MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for (i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script defer id="ribbon" src="/js/third-party/canvas-ribbon.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><script src="/js/search/local-search.js"></script><script>if (document.getElementsByClassName('mermaid').length) {
+  loadScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js',function () {
+    mermaid.initialize({
+      theme: 'default',
+  })
+})
+}</script></body></html>
